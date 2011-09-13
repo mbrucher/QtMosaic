@@ -1,0 +1,11 @@
+
+*.sdf
+/GeneratedFiles
+*.suo
+*.opensdf
+*.filters
+*.user
+*.ilk
+*.pdb
+*.exe
+/Debug
