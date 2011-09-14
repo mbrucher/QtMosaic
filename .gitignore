@@ -9,3 +9,4 @@
 *.pdb
 *.exe
 /Debug
+/ipch
