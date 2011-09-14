@@ -1,3 +1,7 @@
+/**
+ * \file qtmosaic.h
+ */
+
 #ifndef QTMOSAIC_H
 #define QTMOSAIC_H
 
@@ -14,6 +18,17 @@ public:
 
 private:
 	Ui::QtMosaicClass ui;
+  QAction *openAct;
+  QAction *saveAct;
+
+  void createActions();
+  void createToolbar();
+
+  void loadFile(QString fileName);
+
+public slots:
+  void open();
+  void save();
 };
 
 #endif // QTMOSAIC_H

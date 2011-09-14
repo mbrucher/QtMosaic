@@ -1,3 +1,7 @@
+/**
+ * \file main.cpp
+ */
+
 #include "qtmosaic.h"
 #include <QtGui/QApplication>
 

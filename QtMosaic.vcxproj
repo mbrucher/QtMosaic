@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_qtmosaic.h" />
     <ClInclude Include="GeneratedFiles\ui_QtMosaicDatabase.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qtmosaic.qrc">
@@ -133,9 +134,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="QtMosaic.rc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="QtMosaicDatabase.ui">

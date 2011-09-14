@@ -35,7 +35,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
-             <widget class="QLabel" name="OriginalImage">
+             <widget class="QLabel" name="originalImage">
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
@@ -67,7 +67,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
-             <widget class="QLabel" name="MosaicDatabase">
+             <widget class="QLabel" name="mosaicDatabase">
               <property name="text">
                <string/>
               </property>
@@ -105,7 +105,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="MosaicLabel">
+           <widget class="QLabel" name="mosaicLabel">
             <property name="text">
              <string/>
             </property>
