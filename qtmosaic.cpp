@@ -62,6 +62,12 @@ void QtMosaic::loadFile(QString fileName)
 
 void QtMosaic::save()
 {
+  if(ui.mosaicImage->pixmap() ==NULL)
+  {
+    QMessageBox::information(this, tr("Image Viewer"),
+      tr("No image loaded yet"));
+    return;
+  }
   QString fileName = QFileDialog::getSaveFileName(this);
   if (!fileName.isEmpty())
     saveFile(fileName);
