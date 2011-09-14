@@ -55,9 +55,19 @@ void QtMosaic::loadFile(QString fileName)
       tr("Cannot load %1.").arg(fileName));
     return;
   }
-  ui.originalImage->setPixmap(QPixmap::fromImage(image));
+  QPixmap pixmap = QPixmap::fromImage(image);
+  ui.originalImage->setPixmap(pixmap);
+  ui.mosaicImage->setPixmap(pixmap);
 }
 
 void QtMosaic::save()
 {
+  QString fileName = QFileDialog::getSaveFileName(this);
+  if (!fileName.isEmpty())
+    saveFile(fileName);
+}
+
+void QtMosaic::saveFile(QString fileName)
+{
+  ui.mosaicImage->pixmap()->save(fileName);
 }

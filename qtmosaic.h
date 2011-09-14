@@ -25,6 +25,7 @@ private:
   void createToolbar();
 
   void loadFile(QString fileName);
+  void saveFile(QString fileName);
 
 public slots:
   void open();
