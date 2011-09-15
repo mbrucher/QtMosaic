@@ -20,9 +20,13 @@ private:
 	Ui::QtMosaicClass ui;
   QAction *openAct;
   QAction *saveAct;
+  QAction *exitAct;
+  QAction *openDatabaseAct;
+  QAction *editDatabaseAct;
 
   void createActions();
   void createToolbar();
+  void createMenubar();
 
   void loadFile(QString fileName);
   void saveFile(QString fileName);

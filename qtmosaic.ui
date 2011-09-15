@@ -138,6 +138,18 @@
      <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDatabase">
+    <property name="title">
+     <string>Database</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuDatabase"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -148,6 +160,41 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpen_image">
+   <property name="text">
+    <string>Open image</string>
+   </property>
+  </action>
+  <action name="actionOpen_Database">
+   <property name="text">
+    <string>Open Database</string>
+   </property>
+  </action>
+  <action name="actionCreate_Mosaic">
+   <property name="text">
+    <string>Create Mosaic</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionOpen_Database_2">
+   <property name="text">
+    <string>Open Database</string>
+   </property>
+  </action>
+  <action name="actionOpen_Builder">
+   <property name="text">
+    <string>Open Builder</string>
+   </property>
+  </action>
+  <action name="actionSave_Mosaic">
+   <property name="text">
+    <string>Save Mosaic</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
