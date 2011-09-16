@@ -8,6 +8,9 @@
 #include <QtGui/QMainWindow>
 #include "ui_qtmosaicdatabase.h"
 
+class QFileSystemModel;
+class QSortFilterProxyModel;
+
 class QtMosaicDatabase : public QMainWindow
 {
 	Q_OBJECT
@@ -30,6 +33,9 @@ private:
   void newDatabase(QString fileName);
   void loadDatabase(QString fileName);
   void saveDatabase(QString fileName);
+
+  QFileSystemModel *model;
+  QSortFilterProxyModel *filterModel;
 
 public slots:
   void newDatabase();

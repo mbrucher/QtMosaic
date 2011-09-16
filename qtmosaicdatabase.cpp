@@ -4,6 +4,8 @@
 
 #include <QtGui\QFileDialog>
 #include <QtGui\QMessageBox>
+#include <QtGui\QFileSystemModel>
+#include <QtGui\QSortFilterProxyModel>
 
 #include "qtmosaicdatabase.h"
 
@@ -11,6 +13,16 @@ QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WFlags flags)
   : QMainWindow(parent, flags)
 {
   ui.setupUi(this);
+
+  model = new QFileSystemModel;
+  model->setRootPath(QDir::currentPath());
+  filterModel = new QSortFilterProxyModel(parent);
+  filterModel->setSourceModel(model);
+
+  ui.treeView->setModel(filterModel);
+  ui.treeView->setSortingEnabled (true);
+  ui.treeView->sortByColumn (0, Qt::AscendingOrder);
+  //ui.treeView->setRootIndex(model->index(dir));
 
   createActions();
   createToolbar();

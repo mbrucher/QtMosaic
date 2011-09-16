@@ -48,6 +48,9 @@ void QtMosaic::createToolbar()
 {
   ui.mainToolBar->addAction(openAct);
   ui.mainToolBar->addAction(saveAct);
+  ui.mainToolBar->addSeparator();
+  ui.mainToolBar->addAction(openDatabaseAct);
+  ui.mainToolBar->addAction(editDatabaseAct);
 }
 
 void QtMosaic::createMenubar()
