@@ -6,9 +6,10 @@
 #include <QtGui\QMessageBox>
 
 #include "qtmosaic.h"
+#include "qtmosaicdatabase.h"
 
 QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
-  : QMainWindow(parent, flags)
+  : QMainWindow(parent, flags), databaseUI(NULL)
 {
   ui.setupUi(this);
 
@@ -101,4 +102,12 @@ void QtMosaic::save()
 void QtMosaic::saveFile(QString fileName)
 {
   ui.mosaicImage->pixmap()->save(fileName);
+}
+
+void QtMosaic::editDatabase()
+{
+  if(databaseUI == NULL);
+    databaseUI = new QtMosaicDatabase();
+
+  databaseUI->show();
 }

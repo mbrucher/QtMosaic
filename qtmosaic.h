@@ -8,6 +8,8 @@
 #include <QtGui/QMainWindow>
 #include "ui_qtmosaic.h"
 
+class QtMosaicDatabase;
+
 class QtMosaic : public QMainWindow
 {
 	Q_OBJECT
@@ -31,9 +33,13 @@ private:
   void loadFile(QString fileName);
   void saveFile(QString fileName);
 
+  QtMosaicDatabase* databaseUI;
+
 public slots:
   void open();
   void save();
+
+  void editDatabase();
 };
 
 #endif // QTMOSAIC_H
