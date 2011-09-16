@@ -22,6 +22,7 @@ QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WFlags flags)
   ui.treeView->setModel(filterModel);
   ui.treeView->setSortingEnabled (true);
   ui.treeView->sortByColumn (0, Qt::AscendingOrder);
+  ui.treeView->setSelectionMode(QAbstractItemView::MultiSelection);
   //ui.treeView->setRootIndex(model->index(dir));
 
   createActions();
