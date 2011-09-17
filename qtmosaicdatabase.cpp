@@ -2,32 +2,41 @@
  * \file qtmosaicdatabase.cpp
  */
 
-#include <QtGui\QFileDialog>
-#include <QtGui\QMessageBox>
-#include <QtGui\QFileSystemModel>
-#include <QtGui\QSortFilterProxyModel>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
+#include <QtGui/QFileSystemModel>
+#include <QtGui/QSortFilterProxyModel>
 
 #include "qtmosaicdatabase.h"
+#include "QtMosaicDatabaseModel.h"
 
 QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WFlags flags)
   : QMainWindow(parent, flags)
 {
   ui.setupUi(this);
 
-  model = new QFileSystemModel;
+  createModels();
+  
+  createActions();
+  createToolbar();
+  createMenubar();
+}
+
+void QtMosaicDatabase::createModels()
+{
+  model = new QFileSystemModel(this);
   model->setRootPath(QDir::currentPath());
-  filterModel = new QSortFilterProxyModel(parent);
+  filterModel = new QSortFilterProxyModel(this);
   filterModel->setSourceModel(model);
 
   ui.treeView->setModel(filterModel);
   ui.treeView->setSortingEnabled (true);
   ui.treeView->sortByColumn (0, Qt::AscendingOrder);
   ui.treeView->setSelectionMode(QAbstractItemView::MultiSelection);
-  //ui.treeView->setRootIndex(model->index(dir));
 
-  createActions();
-  createToolbar();
-  createMenubar();
+  mosaicDatabaseModel = new QtMosaicDatabaseModel(this);
+  ui.listView->setModel(mosaicDatabaseModel);
+  ui.listView->setViewMode(QListView::IconMode);
 }
 
 void QtMosaicDatabase::createActions()

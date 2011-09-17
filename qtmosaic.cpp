@@ -2,8 +2,8 @@
  * \file qtmosaic.cpp
  */
 
-#include <QtGui\QFileDialog>
-#include <QtGui\QMessageBox>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
 
 #include "qtmosaic.h"
 #include "qtmosaicdatabase.h"

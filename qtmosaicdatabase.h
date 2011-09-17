@@ -10,6 +10,7 @@
 
 class QFileSystemModel;
 class QSortFilterProxyModel;
+class QtMosaicDatabaseModel;
 
 class QtMosaicDatabase : public QMainWindow
 {
@@ -26,6 +27,8 @@ private:
   QAction* openAct;
   QAction* saveAct;
 
+  void createModels();
+
   void createActions();
   void createToolbar();
   void createMenubar();
@@ -34,8 +37,9 @@ private:
   void loadDatabase(QString fileName);
   void saveDatabase(QString fileName);
 
-  QFileSystemModel *model;
-  QSortFilterProxyModel *filterModel;
+  QFileSystemModel* model;
+  QSortFilterProxyModel* filterModel;
+  QtMosaicDatabaseModel* mosaicDatabaseModel;
 
 public slots:
   void newDatabase();
