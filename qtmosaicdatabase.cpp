@@ -34,7 +34,7 @@ void QtMosaicDatabase::createModels()
   ui.treeView->sortByColumn (0, Qt::AscendingOrder);
   ui.treeView->setSelectionMode(QAbstractItemView::MultiSelection);
 
-  mosaicDatabaseModel = new QtMosaicDatabaseModel(this);
+  mosaicDatabaseModel = new QtMosaicDatabaseModel("", this);
   ui.listView->setModel(mosaicDatabaseModel);
   ui.listView->setViewMode(QListView::IconMode);
 }
