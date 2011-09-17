@@ -37,6 +37,7 @@ void QtMosaicDatabase::createModels()
   mosaicDatabaseModel = new QtMosaicDatabaseModel("", this);
   ui.listView->setModel(mosaicDatabaseModel);
   ui.listView->setViewMode(QListView::IconMode);
+  ui.listView->setMovement(QListView::Free);
 }
 
 void QtMosaicDatabase::createActions()
@@ -53,6 +54,9 @@ void QtMosaicDatabase::createActions()
   saveAct->setShortcuts(QKeySequence::Save);
   saveAct->setStatusTip(tr("Save the mosaic to disk"));
   connect(saveAct, SIGNAL(triggered()), this, SLOT(saveDatabase()));
+
+  connect(ui.addButton, SIGNAL(clicked()), this, SLOT(addImages()));
+  connect(ui.removeButton, SIGNAL(clicked()), this, SLOT(removeImages()));
 }
 
 void QtMosaicDatabase::createToolbar()

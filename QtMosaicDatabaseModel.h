@@ -6,7 +6,7 @@
 #define QTMOSAICDATABASEMODEL_H
 
 #include <QtCore/QAbstractListModel>
-#include <QtCore/qmap.h>
+#include <QtCore/qlist.h>
 
 class QtMosaicDatabaseModel :
   public QAbstractListModel
@@ -19,12 +19,16 @@ public:
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 private:
-  QMap<QString, QPixmap> database;
+  QList<std::pair<QString, QPixmap> > database;
 
   void reset();
   void open(const QString& filename);
 
   static QPixmap createThumbnail(const QString& filename);
+
+  static const int scalingFactor = 3;
+  static const int widthFactor = 12;
+  static const int heightFactor = 12;
 };
 
 #endif // QTMOSAICDATABASEMODEL_H
