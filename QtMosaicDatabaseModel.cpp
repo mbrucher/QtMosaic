@@ -53,5 +53,5 @@ QVariant QtMosaicDatabaseModel::data(const QModelIndex &index, int role) const
 
 QPixmap QtMosaicDatabaseModel::createThumbnail(const QString& filename)
 {
-  return QPixmap(filename);
+  return QPixmap(filename).scaled(3*16, 3*12);
 }
