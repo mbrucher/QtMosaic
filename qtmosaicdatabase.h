@@ -45,6 +45,9 @@ public slots:
   void newDatabase();
   void openDatabase();
   void saveDatabase();
+
+  void addImages();
+  void removeImages();
 };
 
 #endif // QTMOSAICDATABASE_H

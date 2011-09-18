@@ -12,17 +12,22 @@ class QtMosaicDatabaseModel :
   public QAbstractListModel
 {
 public:
+  typedef QAbstractListModel Parent;
+
   QtMosaicDatabaseModel(const QString& filename = QString(), QObject* parent = 0);
   ~QtMosaicDatabaseModel(void);
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const ;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-private:
-  QList<std::pair<QString, QPixmap> > database;
-
   void reset();
   void open(const QString& filename);
+  void save(const QString& filename);
+
+  void addElement(const QString& filename);
+
+private:
+  QList<std::pair<QString, QPixmap> > database;
 
   static QPixmap createThumbnail(const QString& filename);
 

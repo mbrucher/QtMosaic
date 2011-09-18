@@ -25,10 +25,15 @@ QtMosaicDatabaseModel::~QtMosaicDatabaseModel(void)
 
 void QtMosaicDatabaseModel::reset()
 {
-  database.append(std::make_pair("test.jpeg", createThumbnail(QString("test.jpeg"))));
+  database.clear();
+  Parent::reset();
 }
 
 void QtMosaicDatabaseModel::open(const QString& filename)
+{
+}
+
+void QtMosaicDatabaseModel::save(const QString& filename)
 {
 }
 
@@ -58,4 +63,9 @@ QVariant QtMosaicDatabaseModel::data(const QModelIndex &index, int role) const
 QPixmap QtMosaicDatabaseModel::createThumbnail(const QString& filename)
 {
   return QPixmap(filename).scaled(scalingFactor*widthFactor, scalingFactor*heightFactor);
+}
+
+void QtMosaicDatabaseModel::addElement(const QString& filename)
+{
+  database.append(std::make_pair(filename, createThumbnail(filename)));
 }

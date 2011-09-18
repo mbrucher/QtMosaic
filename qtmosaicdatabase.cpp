@@ -36,18 +36,21 @@ void QtMosaicDatabase::createModels()
 
   mosaicDatabaseModel = new QtMosaicDatabaseModel("", this);
   ui.listView->setModel(mosaicDatabaseModel);
+  ui.listView->setResizeMode(QListView::Adjust);
   ui.listView->setViewMode(QListView::IconMode);
   ui.listView->setMovement(QListView::Free);
 }
 
 void QtMosaicDatabase::createActions()
 {
-  newAct = new QAction(this);
+  newAct = new QAction(QIcon(":/QtMosaic/Resources/new.png"), tr("&New..."), this);
+  newAct->setShortcuts(QKeySequence::New);
+  newAct->setStatusTip(tr("New mosaic database"));
   connect(newAct, SIGNAL(triggered()), this, SLOT(newDatabase()));
 
   openAct = new QAction(QIcon(":/QtMosaic/Resources/open.png"), tr("&Open..."), this);
   openAct->setShortcuts(QKeySequence::Open);
-  openAct->setStatusTip(tr("Open an image"));
+  openAct->setStatusTip(tr("Open a mosaic database"));
   connect(openAct, SIGNAL(triggered()), this, SLOT(openDatabase()));
 
   saveAct = new QAction(QIcon(":/QtMosaic/Resources/save.png"), tr("&Save..."), this);
@@ -80,6 +83,7 @@ QtMosaicDatabase::~QtMosaicDatabase()
 
 void QtMosaicDatabase::newDatabase()
 {
+  mosaicDatabaseModel->reset();
 }
 
 void QtMosaicDatabase::openDatabase()
@@ -91,6 +95,7 @@ void QtMosaicDatabase::openDatabase()
 
 void QtMosaicDatabase::loadDatabase(QString fileName)
 {
+  mosaicDatabaseModel->open(fileName);
 }
 
 void QtMosaicDatabase::saveDatabase()
@@ -102,5 +107,31 @@ void QtMosaicDatabase::saveDatabase()
 
 void QtMosaicDatabase::saveDatabase(QString fileName)
 {
-  
+  mosaicDatabaseModel->save(fileName);
+}
+
+void QtMosaicDatabase::addImages()
+{
+  QModelIndexList indexes = ui.treeView->selectionModel()->selectedRows();
+  QModelIndex index;
+
+  foreach(index, indexes)
+  {
+    QFileInfo fileInfo = model->fileInfo(filterModel->mapToSource(index));
+    QString text = fileInfo.filePath();
+    try
+    {
+      mosaicDatabaseModel->addElement(text);
+    }
+    catch(const std::exception& except)
+    {
+    }
+    QMessageBox::about(this, text, text);
+  }
+  ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
+  ui.listView->reset();
+}
+
+void QtMosaicDatabase::removeImages()
+{
 }
