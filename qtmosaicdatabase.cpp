@@ -32,7 +32,7 @@ void QtMosaicDatabase::createModels()
   ui.treeView->setModel(filterModel);
   ui.treeView->setSortingEnabled (true);
   ui.treeView->sortByColumn (0, Qt::AscendingOrder);
-  ui.treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+  ui.treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   mosaicDatabaseModel = new QtMosaicDatabaseModel("", this);
   ui.listView->setModel(mosaicDatabaseModel);
@@ -126,7 +126,6 @@ void QtMosaicDatabase::addImages()
     catch(const std::exception& except)
     {
     }
-    QMessageBox::about(this, text, text);
   }
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
