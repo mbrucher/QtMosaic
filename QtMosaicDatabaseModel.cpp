@@ -2,6 +2,8 @@
  * \file QtModaicDatabaseModel.cpp
  */
 
+#include <QtCore/qfile.h>
+#include <QtCore/qfileinfo.h>
 #include <QtGui/qpixmap.h>
 
 #include "QtMosaicDatabaseModel.h"
@@ -31,10 +33,41 @@ void QtMosaicDatabaseModel::reset()
 
 void QtMosaicDatabaseModel::open(const QString& filename)
 {
+  database.clear();
+  Parent::reset();
+  QFile file(filename);
+  file.open(QIODevice::ReadOnly);
+  QDataStream openedFile(&file);
+
+  int version;
+  openedFile >> version; // Version
+  int size;
+  openedFile >> size;
+  for(int i = 0; i < size; ++i)
+  {
+    QString picname;
+    QPixmap pixmap;
+    openedFile >> picname;
+    openedFile >> pixmap;
+    database.append(std::make_pair(picname, pixmap));
+  }
 }
 
 void QtMosaicDatabaseModel::save(const QString& filename)
 {
+  QFile file(filename);
+  file.open(QIODevice::WriteOnly);
+  QDataStream openedFile(&file);
+
+  int version = 1;
+
+  openedFile << version; // Version
+  openedFile << database.size();
+  for(Database::const_iterator it = database.begin(); it != database.end(); ++it)
+  {
+    openedFile << it->first;
+    openedFile << it->second;
+  }
 }
 
 int QtMosaicDatabaseModel::rowCount(const QModelIndex &parent) const
@@ -50,7 +83,7 @@ QVariant QtMosaicDatabaseModel::data(const QModelIndex &index, int role) const
   }
   if(role == Qt::DisplayRole)
   {
-    return database.at(index.row()).first;
+    return QFileInfo(database.at(index.row()).first).fileName();
   }
   if(role == Qt::DecorationRole)
   {

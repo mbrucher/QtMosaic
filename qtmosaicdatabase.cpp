@@ -64,6 +64,7 @@ void QtMosaicDatabase::createActions()
 
 void QtMosaicDatabase::createToolbar()
 {
+  ui.mainToolBar->addAction(newAct);
   ui.mainToolBar->addAction(openAct);
   ui.mainToolBar->addAction(saveAct);
 }

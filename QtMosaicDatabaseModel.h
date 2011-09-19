@@ -27,6 +27,7 @@ public:
   void addElement(const QString& filename);
 
 private:
+  typedef QList<std::pair<QString, QPixmap> > Database;
   QList<std::pair<QString, QPixmap> > database;
 
   static QPixmap createThumbnail(const QString& filename);
