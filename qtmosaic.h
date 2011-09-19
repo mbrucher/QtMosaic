@@ -32,14 +32,18 @@ private:
 
   void loadFile(QString fileName);
   void saveFile(QString fileName);
+  void loadDatabase(QString fileName);
 
   QtMosaicDatabase* databaseUI;
+
+  QString database;
 
 public slots:
   void open();
   void save();
 
   void editDatabase();
+  void openDatabase();
 };
 
 #endif // QTMOSAIC_H

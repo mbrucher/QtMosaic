@@ -20,6 +20,10 @@ public:
 	QtMosaicDatabase(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~QtMosaicDatabase();
 
+  void newDatabase(QString fileName);
+  void loadDatabase(QString fileName);
+  void saveDatabase(QString fileName);
+
 private:
 	Ui::QtMosaicDatabaseClass ui;
   
@@ -32,10 +36,6 @@ private:
   void createActions();
   void createToolbar();
   void createMenubar();
-
-  void newDatabase(QString fileName);
-  void loadDatabase(QString fileName);
-  void saveDatabase(QString fileName);
 
   QFileSystemModel* model;
   QSortFilterProxyModel* filterModel;

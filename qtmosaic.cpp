@@ -107,10 +107,24 @@ void QtMosaic::saveFile(QString fileName)
   ui.mosaicImage->pixmap()->save(fileName);
 }
 
+void QtMosaic::openDatabase()
+{
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QString(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  if (!fileName.isEmpty())
+    loadDatabase(fileName);
+}
+
+void QtMosaic::loadDatabase(QString filename)
+{
+  database = filename;
+}
+
 void QtMosaic::editDatabase()
 {
-  if(databaseUI == NULL);
+  if(databaseUI == NULL)
     databaseUI = new QtMosaicDatabase();
+  if(database != "")
+    databaseUI->loadDatabase(database);
 
   databaseUI->show();
 }
