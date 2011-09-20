@@ -7,6 +7,7 @@
 
 #include "qtmosaic.h"
 #include "qtmosaicdatabase.h"
+#include "QtMosaicBuilder.h"
 
 QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
   : QMainWindow(parent, flags), databaseUI(NULL)
@@ -16,6 +17,8 @@ QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
   createActions();
   createToolbar();
   createMenubar();
+
+  builder = new QtMosaicBuilder(parent);
 }
 
 void QtMosaic::createActions()
@@ -29,6 +32,10 @@ void QtMosaic::createActions()
   saveAct->setShortcuts(QKeySequence::Save);
   saveAct->setStatusTip(tr("Save the mosaic to disk"));
   connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+
+  execAct = new QAction(QIcon(":/QtMosaic/Resources/exec.png"), tr("&Exec"), this);
+  execAct->setStatusTip(tr("Create a new mosaic"));
+  connect(execAct, SIGNAL(triggered()), this, SLOT(exec()));
 
   exitAct = new QAction(QIcon(":/QtMosaic/Resources/close.png"), tr("&Quit"), this);
   exitAct->setShortcuts(QKeySequence::Close);
@@ -48,6 +55,7 @@ void QtMosaic::createToolbar()
 {
   ui.mainToolBar->addAction(openAct);
   ui.mainToolBar->addAction(saveAct);
+  ui.mainToolBar->addAction(execAct);
   ui.mainToolBar->addSeparator();
   ui.mainToolBar->addAction(openDatabaseAct);
   ui.mainToolBar->addAction(editDatabaseAct);
@@ -57,6 +65,7 @@ void QtMosaic::createMenubar()
 {
   ui.menuFile->addAction(openAct);
   ui.menuFile->addAction(saveAct);
+  ui.menuFile->addAction(execAct);
   ui.menuFile->addSeparator();
   ui.menuFile->addAction(exitAct);
 
@@ -117,6 +126,7 @@ void QtMosaic::openDatabase()
 void QtMosaic::loadDatabase(QString filename)
 {
   database = filename;
+  builder->build(filename);
 }
 
 void QtMosaic::editDatabase()
@@ -127,4 +137,9 @@ void QtMosaic::editDatabase()
     databaseUI->loadDatabase(database);
 
   databaseUI->show();
+}
+
+void QtMosaic::exec()
+{
+  ui.mosaicImage->setPixmap(builder->create(ui.originalImage->pixmap()));
 }

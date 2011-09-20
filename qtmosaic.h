@@ -6,9 +6,11 @@
 #define QTMOSAIC_H
 
 #include <QtGui/QMainWindow>
+
 #include "ui_qtmosaic.h"
 
 class QtMosaicDatabase;
+class QtMosaicBuilder;
 
 class QtMosaic : public QMainWindow
 {
@@ -22,6 +24,7 @@ private:
 	Ui::QtMosaicClass ui;
   QAction *openAct;
   QAction *saveAct;
+  QAction *execAct;
   QAction *exitAct;
   QAction *openDatabaseAct;
   QAction *editDatabaseAct;
@@ -35,12 +38,14 @@ private:
   void loadDatabase(QString fileName);
 
   QtMosaicDatabase* databaseUI;
+  QtMosaicBuilder* builder;
 
   QString database;
 
 public slots:
   void open();
   void save();
+  void exec();
 
   void editDatabase();
   void openDatabase();
