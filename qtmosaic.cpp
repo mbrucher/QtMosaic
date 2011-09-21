@@ -108,7 +108,14 @@ void QtMosaic::save()
   }
   QString fileName = QFileDialog::getSaveFileName(this);
   if (!fileName.isEmpty())
+  {
     saveFile(fileName);
+  }
+  else
+  {
+    QMessageBox::information(this, tr("Image Viewer"),
+      tr("No given filename"));
+  }
 }
 
 void QtMosaic::saveFile(QString fileName)

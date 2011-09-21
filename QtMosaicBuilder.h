@@ -8,6 +8,8 @@
 #include <QtCore/qobject.h>
 #include <QtGui/qpixmap.h>
 
+class QtMosaicDatabaseModel;
+
 class QtMosaicBuilder: public QObject
 {
 public:
@@ -15,6 +17,11 @@ public:
 
   void build(const QString& database);
   QPixmap create(const QPixmap* pixmap);
+
+private:
+  void processImage(QImage& image) const;
+
+  QtMosaicDatabaseModel* model;
 };
 
 #endif

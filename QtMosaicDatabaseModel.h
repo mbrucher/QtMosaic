@@ -32,8 +32,9 @@ private:
 
   static QPixmap createThumbnail(const QString& filename);
 
+public:
   static const int scalingFactor = 3;
-  static const int widthFactor = 12;
+  static const int widthFactor = 16;
   static const int heightFactor = 12;
 };
 
