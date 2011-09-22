@@ -18,9 +18,17 @@ public:
   void build(const QString& database);
   QPixmap create(const QPixmap* pixmap);
 
+  class QtMosaicProcessor
+  {
+  public:
+    void operator()(QImage& image);
+
+    QtMosaicDatabaseModel* model;
+  };
+
 private:
   void processImage(QImage& image) const;
-
+  QtMosaicProcessor processor;
   QtMosaicDatabaseModel* model;
 };
 

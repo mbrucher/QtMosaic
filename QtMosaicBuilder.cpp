@@ -2,6 +2,8 @@
  * \file QtMosaicBuilder.cpp
  */
 
+#include <QtConcurrentMap>
+
 #include "QtMosaicBuilder.h"
 #include "QtMosaicDatabaseModel.h"
 
@@ -13,6 +15,7 @@ QtMosaicBuilder::QtMosaicBuilder(QObject* parent)
 void QtMosaicBuilder::build(const QString& database)
 {
   model = new QtMosaicDatabaseModel(database, this);
+  processor.model = model;
 }
 
 QPixmap QtMosaicBuilder::create(const QPixmap* pixmap)
@@ -34,11 +37,20 @@ QPixmap QtMosaicBuilder::create(const QPixmap* pixmap)
 
 void QtMosaicBuilder::processImage(QImage& image) const
 {
-  for(int j = 0; j < image.height(); j += model->scalingFactor * model->heightFactor)
+  QVector<QImage> vector;
+
+  for(int j = 0; j < image.height(); j += processor.model->scalingFactor * processor.model->heightFactor)
   {
-    for(int i = 0; i < image.width(); i += model->scalingFactor * model->widthFactor)
+    for(int i = 0; i < image.width(); i += processor.model->scalingFactor * processor.model->widthFactor)
     {
-      image.setPixel(i, j, 0);
+      vector.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor));
     }
   }
+
+  QtConcurrent::map(vector, processor);
+}
+
+void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
+{
+  
 }
