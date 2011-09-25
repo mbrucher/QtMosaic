@@ -115,21 +115,35 @@ void QtMosaicDatabase::addImages()
 {
   QModelIndexList indexes = ui.treeView->selectionModel()->selectedRows();
   QModelIndex index;
+  QModelIndex sourceIndex;
 
   foreach(index, indexes)
   {
-    QFileInfo fileInfo = model->fileInfo(filterModel->mapToSource(index));
-    QString text = fileInfo.filePath();
-    try
+    sourceIndex = filterModel->mapToSource(index);
+    if(model->isDir(sourceIndex))
     {
-      mosaicDatabaseModel->addElement(text);
+      //addImage(sourceIndex);
     }
-    catch(const std::exception& except)
+    else
     {
+      addImage(sourceIndex);
     }
   }
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
+}
+
+void QtMosaicDatabase::addImage(const QModelIndex& index)
+{
+  QFileInfo fileInfo = model->fileInfo(index);
+  QString text = fileInfo.filePath();
+  try
+  {
+    mosaicDatabaseModel->addElement(text);
+  }
+  catch(const std::exception& except)
+  {
+  }
 }
 
 void QtMosaicDatabase::removeImages()

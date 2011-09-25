@@ -37,6 +37,8 @@ private:
   void createToolbar();
   void createMenubar();
 
+  void addImage(const QModelIndex& index);
+
   QFileSystemModel* model;
   QSortFilterProxyModel* filterModel;
   QtMosaicDatabaseModel* mosaicDatabaseModel;
