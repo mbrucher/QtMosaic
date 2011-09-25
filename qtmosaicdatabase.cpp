@@ -122,7 +122,7 @@ void QtMosaicDatabase::addImages()
     sourceIndex = filterModel->mapToSource(index);
     if(model->isDir(sourceIndex))
     {
-      //addImage(sourceIndex);
+      addFolder(sourceIndex);
     }
     else
     {
@@ -131,6 +131,14 @@ void QtMosaicDatabase::addImages()
   }
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
+}
+
+void QtMosaicDatabase::addFolder(const QModelIndex& index)
+{
+  for(int i = 0; i < model->rowCount(); ++i)
+  {
+    addImage(model->index(i, 0, index));
+  }
 }
 
 void QtMosaicDatabase::addImage(const QModelIndex& index)

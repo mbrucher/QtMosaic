@@ -5,6 +5,7 @@
 #include <QtCore/qfile.h>
 #include <QtCore/qfileinfo.h>
 #include <QtGui/qpixmap.h>
+#include <QtGui/qmessagebox.h>
 
 #include "QtMosaicDatabaseModel.h"
 
@@ -101,4 +102,5 @@ QPixmap QtMosaicDatabaseModel::createThumbnail(const QString& filename)
 void QtMosaicDatabaseModel::addElement(const QString& filename)
 {
   database.append(std::make_pair(filename, createThumbnail(filename)));
+  QMessageBox::about(NULL, filename, filename);
 }

@@ -38,6 +38,7 @@ private:
   void createMenubar();
 
   void addImage(const QModelIndex& index);
+  void addFolder(const QModelIndex& index);
 
   QFileSystemModel* model;
   QSortFilterProxyModel* filterModel;
