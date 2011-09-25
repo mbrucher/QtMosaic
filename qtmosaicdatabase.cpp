@@ -135,6 +135,12 @@ void QtMosaicDatabase::addImages()
 
 void QtMosaicDatabase::addFolder(const QModelIndex& index)
 {
+  while(model->canFetchMore(index))
+  {
+    model->fetchMore(index);
+  }
+QMessageBox::about(this, "test", QString::number(model->rowCount()));
+QMessageBox::about(this, "test", QString::number(model->columnCount()));
   for(int i = 0; i < model->rowCount(); ++i)
   {
     addImage(model->index(i, 0, index));

@@ -7,6 +7,8 @@
 #include <QtGui/qpixmap.h>
 #include <QtGui/qmessagebox.h>
 
+#include <algorithm>
+
 #include "QtMosaicDatabaseModel.h"
 
 QtMosaicDatabaseModel::QtMosaicDatabaseModel(const QString& filename, QObject* parent)
@@ -101,6 +103,10 @@ QPixmap QtMosaicDatabaseModel::createThumbnail(const QString& filename)
 
 void QtMosaicDatabaseModel::addElement(const QString& filename)
 {
+  if(std::find_if(database.begin(), database.end(), [&](Database::value_type& value){return value.first == filename;}) != database.end())
+  {
+    return;
+  }
   database.append(std::make_pair(filename, createThumbnail(filename)));
   QMessageBox::about(NULL, filename, filename);
 }
