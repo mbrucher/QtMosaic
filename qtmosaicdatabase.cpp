@@ -2,6 +2,7 @@
  * \file qtmosaicdatabase.cpp
  */
 
+#include <QtCore/qdir.h>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileSystemModel>
@@ -122,34 +123,42 @@ void QtMosaicDatabase::addImages()
     sourceIndex = filterModel->mapToSource(index);
     if(model->isDir(sourceIndex))
     {
-      addFolder(sourceIndex);
+      addFolder(model->fileInfo(sourceIndex));
     }
     else
     {
-      addImage(sourceIndex);
+      addImage(model->fileInfo(sourceIndex));
     }
   }
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
 }
 
-void QtMosaicDatabase::addFolder(const QModelIndex& index)
+void QtMosaicDatabase::addFolder(const QFileInfo& fileInfo)
 {
-  while(model->canFetchMore(index))
+  QDir dir(fileInfo.filePath());
+  QStringList filters;
+  filters << "*";
+  dir.setNameFilters(filters);
+
+  QFileInfoList list = dir.entryInfoList(QDir::AllEntries|QDir::NoDotAndDotDot);
+  QFileInfo info;
+
+  foreach(info, list)
   {
-    model->fetchMore(index);
-  }
-QMessageBox::about(this, "test", QString::number(model->rowCount()));
-QMessageBox::about(this, "test", QString::number(model->columnCount()));
-  for(int i = 0; i < model->rowCount(); ++i)
-  {
-    addImage(model->index(i, 0, index));
+    if(info.isDir())
+    {
+      addFolder(info);
+    }
+    else
+    {
+      addImage(info);
+    }
   }
 }
 
-void QtMosaicDatabase::addImage(const QModelIndex& index)
+void QtMosaicDatabase::addImage(const QFileInfo& fileInfo)
 {
-  QFileInfo fileInfo = model->fileInfo(index);
   QString text = fileInfo.filePath();
   try
   {

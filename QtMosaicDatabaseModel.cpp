@@ -98,6 +98,11 @@ QVariant QtMosaicDatabaseModel::data(const QModelIndex &index, int role) const
 
 QPixmap QtMosaicDatabaseModel::createThumbnail(const QString& filename)
 {
+  QPixmap image(filename);
+  if(image.isNull())
+  {
+    throw std::invalid_argument("Not an image file");
+  }
   return QPixmap(filename).scaled(scalingFactor*widthFactor, scalingFactor*heightFactor);
 }
 
@@ -108,5 +113,4 @@ void QtMosaicDatabaseModel::addElement(const QString& filename)
     return;
   }
   database.append(std::make_pair(filename, createThumbnail(filename)));
-  QMessageBox::about(NULL, filename, filename);
 }

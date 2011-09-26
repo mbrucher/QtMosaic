@@ -5,6 +5,8 @@
 #ifndef QTMOSAICDATABASE_H
 #define QTMOSAICDATABASE_H
 
+#include <QtCore/qdir.h>
+#include <QtCore/QFileInfo>
 #include <QtGui/QMainWindow>
 #include "ui_qtmosaicdatabase.h"
 
@@ -37,8 +39,8 @@ private:
   void createToolbar();
   void createMenubar();
 
-  void addImage(const QModelIndex& index);
-  void addFolder(const QModelIndex& index);
+  void addImage(const QFileInfo& fileInfo);
+  void addFolder(const QFileInfo& fileInfo);
 
   QFileSystemModel* model;
   QSortFilterProxyModel* filterModel;
