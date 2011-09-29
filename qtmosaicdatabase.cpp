@@ -7,6 +7,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileSystemModel>
 #include <QtGui/QSortFilterProxyModel>
+#include <QtGui/QProgressDialog>
 
 #include "qtmosaicdatabase.h"
 #include "QtMosaicDatabaseModel.h"
@@ -40,6 +41,7 @@ void QtMosaicDatabase::createModels()
   ui.listView->setResizeMode(QListView::Adjust);
   ui.listView->setViewMode(QListView::IconMode);
   ui.listView->setMovement(QListView::Free);
+  ui.listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 void QtMosaicDatabase::createActions()
@@ -118,8 +120,13 @@ void QtMosaicDatabase::addImages()
   QModelIndex index;
   QModelIndex sourceIndex;
 
+  QProgressDialog progress("Adding files...", "Abort Addition", 0, indexes.size(), this);
+  progress.setWindowModality(Qt::WindowModal);
+
+  int i = 0;
   foreach(index, indexes)
   {
+    progress.setValue(i);
     sourceIndex = filterModel->mapToSource(index);
     if(model->isDir(sourceIndex))
     {
@@ -129,7 +136,11 @@ void QtMosaicDatabase::addImages()
     {
       addImage(model->fileInfo(sourceIndex));
     }
+    if (progress.wasCanceled())
+        break;
+    ++i;
   }
+  progress.setValue(i);
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
 }
@@ -174,15 +185,29 @@ void QtMosaicDatabase::removeImages()
   QModelIndexList indexes = ui.listView->selectionModel()->selectedRows();
   QModelIndex index;
   QList<QString> imageList;
+
+  QProgressDialog progress("Removing files...", "Abort removal", 0, indexes.size() * 2, this);
+  progress.setWindowModality(Qt::WindowModal);
+
+  int i = 0;
   foreach(index, indexes)
   {
+    progress.setValue(i);
     imageList.push_back(index.data(Qt::EditRole).toString());
+    if (progress.wasCanceled())
+        break;
+    ++i;
   }
   QString image;
   foreach(image, imageList)
   {
+    progress.setValue(i);
     removeImage(image);
+    if (progress.wasCanceled())
+        break;
+    ++i;
   }
+  progress.setValue(i);
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
 }
