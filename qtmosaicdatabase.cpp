@@ -171,4 +171,17 @@ void QtMosaicDatabase::addImage(const QFileInfo& fileInfo)
 
 void QtMosaicDatabase::removeImages()
 {
+  QModelIndexList indexes = ui.listView->selectionModel()->selectedRows();
+  QModelIndex index;
+
+  foreach(index, indexes)
+  {
+    removeImage(index.data(Qt::EditRole).toString());
+  }
+  ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
+  ui.listView->reset();
+}
+
+void QtMosaicDatabase::removeImage(const QString& string)
+{
 }

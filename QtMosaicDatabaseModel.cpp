@@ -92,6 +92,10 @@ QVariant QtMosaicDatabaseModel::data(const QModelIndex &index, int role) const
   {
     return database.at(index.row()).second;
   }
+  if(role == Qt::EditRole)
+  {
+    return database.at(index.row()).first;
+  }
 
   return QVariant();
 }

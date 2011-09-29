@@ -41,6 +41,7 @@ private:
 
   void addImage(const QFileInfo& fileInfo);
   void addFolder(const QFileInfo& fileInfo);
+  void removeImage(const QString& string);
 
   QFileSystemModel* model;
   QSortFilterProxyModel* filterModel;
