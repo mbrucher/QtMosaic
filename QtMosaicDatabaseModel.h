@@ -25,6 +25,7 @@ public:
   void save(const QString& filename);
 
   void addElement(const QString& filename);
+  void removeElement(const QString& filename);
 
 private:
   typedef QList<std::pair<QString, QPixmap> > Database;

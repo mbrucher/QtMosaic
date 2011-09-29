@@ -118,3 +118,12 @@ void QtMosaicDatabaseModel::addElement(const QString& filename)
   }
   database.append(std::make_pair(filename, createThumbnail(filename)));
 }
+
+void QtMosaicDatabaseModel::removeElement(const QString& filename)
+{
+  Database::iterator it = std::find_if(database.begin(), database.end(), [&](Database::value_type& value){return value.first == filename;});
+  if(it != database.end())
+  {
+    database.erase(it);
+  }
+}

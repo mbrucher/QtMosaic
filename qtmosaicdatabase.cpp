@@ -173,10 +173,15 @@ void QtMosaicDatabase::removeImages()
 {
   QModelIndexList indexes = ui.listView->selectionModel()->selectedRows();
   QModelIndex index;
-
+  QList<QString> imageList;
   foreach(index, indexes)
   {
-    removeImage(index.data(Qt::EditRole).toString());
+    imageList.push_back(index.data(Qt::EditRole).toString());
+  }
+  QString image;
+  foreach(image, imageList)
+  {
+    removeImage(image);
   }
   ui.statusbar->showMessage(tr("Current number of photos: %1").arg(mosaicDatabaseModel->rowCount()));
   ui.listView->reset();
@@ -184,4 +189,5 @@ void QtMosaicDatabase::removeImages()
 
 void QtMosaicDatabase::removeImage(const QString& string)
 {
+  mosaicDatabaseModel->removeElement(string);
 }
