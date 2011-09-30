@@ -2,7 +2,6 @@
  * \file QtMosaicBuilder.cpp
  */
 
-#include <QtConcurrentMap>
 #include <QtGui/qpainter.h>
 
 #include "QtMosaicBuilder.h"
@@ -20,38 +19,38 @@ void QtMosaicBuilder::build(const QString& database)
   model->build();
 }
 
-QPixmap QtMosaicBuilder::create(const QPixmap* pixmap)
+void QtMosaicBuilder::create(const QPixmap* pixmap)
 {
   if(pixmap == NULL)
   {
-    return QPixmap(); 
+    return; 
   }
 
-  QImage image = pixmap->toImage();
+  image = pixmap->toImage();
 
   QPixmap newpixmap;
 
   processImage(image);
-
-  newpixmap.convertFromImage(image);
-  return newpixmap;
 }
 
-void QtMosaicBuilder::processImage(QImage& image) const
+void QtMosaicBuilder::processImage(QImage& image)
 {
-  QVector<QImage> vector;
-
+  imageParts.clear();
   for(int j = 0; j < image.height(); j += processor.model->scalingFactor * processor.model->heightFactor)
   {
     for(int i = 0; i < image.width(); i += processor.model->scalingFactor * processor.model->widthFactor)
     {
-      vector.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor));
+      imageParts.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor));
     }
   }
 
-  QtConcurrent::map(vector, processor).waitForFinished();
-
-  reconstructImage(image, vector);
+  future = QtConcurrent::map(imageParts, processor);
+  progress = new QProgressDialog("Operation in progress.", "Cancel", future.progressMinimum(), future.progressMaximum());
+  progress->setWindowModality(Qt::WindowModal);;
+  connect(progress, SIGNAL(canceled()), this, SLOT(cancel()));
+  timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+  timer->start(0);
 }
 
 void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
@@ -110,4 +109,28 @@ float QtMosaicBuilder::QtMosaicProcessor::distance(const QImage& image1, const Q
 float QtMosaicBuilder::QtMosaicProcessor::distance(const QRgb& rgb1, const QRgb& rgb2)
 {
   return (qRed(rgb1) - qRed(rgb2)) * (qRed(rgb1) - qRed(rgb2)) + (qGreen(rgb1) - qGreen(rgb2)) * (qGreen(rgb1) - qGreen(rgb2)) + (qBlue(rgb1) - qBlue(rgb2)) * (qBlue(rgb1) - qBlue(rgb2));
+}
+
+void QtMosaicBuilder::update()
+{
+  if(future.isCanceled())
+  { 
+    return;
+  }
+
+  progress->setValue(future.progressValue());
+  if(future.isFinished())
+  {
+    reconstructImage(image, imageParts);
+    QPixmap newpixmap;
+    newpixmap.convertFromImage(image);
+    emit updateMosaic(newpixmap);
+    progress->deleteLater();
+  }
+}
+
+void QtMosaicBuilder::cancel()
+{
+  future.cancel();
+  progress->deleteLater();
 }

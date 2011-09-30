@@ -7,17 +7,22 @@
 
 #include <QtCore/qobject.h>
 #include <QtCore/qvector.h>
+#include <QtCore/qtimer.h>
 #include <QtGui/qpixmap.h>
+#include <QtGui/qprogressdialog.h>
+#include <QtConcurrentMap>
 
 class QtMosaicDatabaseModel;
 
 class QtMosaicBuilder: public QObject
 {
+	Q_OBJECT
+
 public:
   QtMosaicBuilder(QObject* parent = NULL);
 
   void build(const QString& database);
-  QPixmap create(const QPixmap* pixmap);
+  void create(const QPixmap* pixmap);
 
   class QtMosaicProcessor
   {
@@ -31,11 +36,25 @@ public:
   };
 
 private:
-  void processImage(QImage& image) const;
+  void processImage(QImage& image);
   void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
+
+  QFuture<void> future;
+  QProgressDialog* progress;
+  QTimer* timer;
 
   QtMosaicProcessor processor;
   QtMosaicDatabaseModel* model;
+
+  QImage image;
+  QVector<QImage> imageParts;
+
+public slots:
+  void update();
+  void cancel();
+
+signals:
+  void updateMosaic(QPixmap pixmap);
 };
 
 #endif
