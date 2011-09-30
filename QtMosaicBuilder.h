@@ -6,6 +6,7 @@
 #define QTMOSAICBUILDER_H
 
 #include <QtCore/qobject.h>
+#include <QtCore/qvector.h>
 #include <QtGui/qpixmap.h>
 
 class QtMosaicDatabaseModel;
@@ -28,6 +29,8 @@ public:
 
 private:
   void processImage(QImage& image) const;
+  void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
+
   QtMosaicProcessor processor;
   QtMosaicDatabaseModel* model;
 };
