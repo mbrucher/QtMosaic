@@ -127,3 +127,13 @@ void QtMosaicDatabaseModel::removeElement(const QString& filename)
     database.erase(it);
   }
 }
+
+void QtMosaicDatabaseModel::build()
+{
+  Database::value_type image;
+
+  foreach(image, database)
+  {
+    thumbnails.push_back(image.second.scaled(scalingFactor, scalingFactor).toImage());
+  }
+}

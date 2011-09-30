@@ -25,6 +25,9 @@ public:
     void operator()(QImage& image);
 
     QtMosaicDatabaseModel* model;
+
+    static float distance(const QImage& image1, const QImage& image2);
+    static float distance(const QRgb& rgb1, const QRgb& rgb2);
   };
 
 private:

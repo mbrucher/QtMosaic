@@ -27,9 +27,23 @@ public:
   void addElement(const QString& filename);
   void removeElement(const QString& filename);
 
+  typedef QList<std::pair<QString, QPixmap> > Database;
+  void build();
+
+  const QVector<QImage>& getThumbnails() const
+  {
+    return thumbnails;
+  }
+  const Database& getDatabase() const
+  {
+    return database;
+  }
+
 private:
   typedef QList<std::pair<QString, QPixmap> > Database;
   QList<std::pair<QString, QPixmap> > database;
+
+  QVector<QImage> thumbnails;
 
   static QPixmap createThumbnail(const QString& filename);
 

@@ -17,6 +17,7 @@ void QtMosaicBuilder::build(const QString& database)
 {
   model = new QtMosaicDatabaseModel(database, this);
   processor.model = model;
+  model->build();
 }
 
 QPixmap QtMosaicBuilder::create(const QPixmap* pixmap)
@@ -55,7 +56,26 @@ void QtMosaicBuilder::processImage(QImage& image) const
 
 void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
 {
-  
+  QImage thumbnail = image.scaled(model->scalingFactor, model->scalingFactor);
+
+  if(model->getThumbnails().empty())
+  {
+    return;
+  }
+
+  int best = 0;
+  float bestDistance = distance(image, model->getThumbnails()[0]);
+
+  for(int i = 1; i < model->getThumbnails().size(); ++i)
+  {
+    float newDistance = distance(image, model->getThumbnails()[i]);
+    if(newDistance < bestDistance)
+    {
+      bestDistance = newDistance;
+      best = i;
+    }
+  }
+  image = model->getDatabase()[best].second.toImage();
 }
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
@@ -71,4 +91,23 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
       ++k;
     }
   }
+}
+
+float QtMosaicBuilder::QtMosaicProcessor::distance(const QImage& image1, const QImage& image2)
+{
+  float result = 0;
+
+  for(int j = 0; j < image1.height(); ++j)
+  {
+    for(int i = 0; i < image1.width(); ++i)
+    {
+      result += distance(image1.pixel(i, j), image2.pixel(i, j));
+    }
+  }
+  return result;
+}
+
+float QtMosaicBuilder::QtMosaicProcessor::distance(const QRgb& rgb1, const QRgb& rgb2)
+{
+  return (qRed(rgb1) - qRed(rgb2)) * (qRed(rgb1) - qRed(rgb2)) + (qGreen(rgb1) - qGreen(rgb2)) * (qGreen(rgb1) - qGreen(rgb2)) + (qBlue(rgb1) - qBlue(rgb2)) * (qBlue(rgb1) - qBlue(rgb2));
 }
