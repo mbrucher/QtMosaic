@@ -18,7 +18,7 @@ QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
   createToolbar();
   createMenubar();
 
-  builder = new QtMosaicBuilder(parent);
+  builder = new QtMosaicBuilder(this);
 }
 
 void QtMosaic::createActions()
