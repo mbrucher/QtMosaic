@@ -45,7 +45,7 @@ void QtMosaicBuilder::processImage(QImage& image)
   }
 
   future = QtConcurrent::map(imageParts, processor);
-  progress = new QProgressDialog("Operation in progress.", "Cancel", future.progressMinimum(), future.progressMaximum());
+  progress = new QProgressDialog("Operation in progress.", "Cancel", future.progressMinimum(), future.progressMaximum(), dynamic_cast<QWidget*>(this->parent()));
   progress->setWindowModality(Qt::WindowModal);;
   connect(progress, SIGNAL(canceled()), this, SLOT(cancel()));
   timer = new QTimer(this);
@@ -125,6 +125,7 @@ void QtMosaicBuilder::update()
     QPixmap newpixmap;
     newpixmap.convertFromImage(image);
     emit updateMosaic(newpixmap);
+    timer->stop();
     progress->deleteLater();
   }
 }
@@ -132,5 +133,6 @@ void QtMosaicBuilder::update()
 void QtMosaicBuilder::cancel()
 {
   future.cancel();
+  timer->stop();
   progress->deleteLater();
 }

@@ -10,3 +10,4 @@
 *.exe
 /Debug
 /ipch
+/Release
