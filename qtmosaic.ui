@@ -60,10 +60,16 @@
         </item>
         <item>
          <widget class="QScrollArea" name="scrollArea_3">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
           <widget class="QWidget" name="scrollAreaWidgetContents_3">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -74,14 +80,48 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
-             <widget class="QLabel" name="mosaicDatabase">
+             <widget class="QLabel" name="label_2">
               <property name="text">
-               <string/>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <string>Number of elements:</string>
               </property>
              </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="databaseSize">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Photomosaic height:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="mosaicHeight"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Photomosaic width: </string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="mosaicWidth"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Output ratio:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="outputRatio"/>
             </item>
            </layout>
           </widget>
