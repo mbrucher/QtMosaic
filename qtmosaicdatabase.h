@@ -8,7 +8,7 @@
 #include <QtCore/qdir.h>
 #include <QtCore/QFileInfo>
 #include <QtGui/QMainWindow>
-#include "ui_qtmosaicdatabase.h"
+#include "ui_QtMosaicDatabase.h"
 
 class QFileSystemModel;
 class QSortFilterProxyModel;
