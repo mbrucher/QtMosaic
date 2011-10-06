@@ -11,3 +11,7 @@
 /Debug
 /ipch
 /Release
+*.vsp
+*.mosaic
+*.jpeg
+*.psess
