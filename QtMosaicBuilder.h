@@ -22,7 +22,7 @@ public:
   QtMosaicBuilder(QObject* parent = NULL);
 
   void build(const QString& database);
-  void create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float ratio);
+  void create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float outputRatio);
 
   class QtMosaicProcessor
   {

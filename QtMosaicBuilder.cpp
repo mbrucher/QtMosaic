@@ -20,7 +20,7 @@ void QtMosaicBuilder::build(const QString& database)
   model->build();
 }
 
-void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float ratio)
+void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float outputRatio)
 {
   if(pixmap == NULL)
   {
@@ -81,14 +81,15 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
 {
+  image = image.scaled(image.width() * outputRatio, image.height() * outputRatio);
   QPainter painter(&image);
 
   int k = 0;
-  for(int j = 0; j < image.height(); j += mosaicHeight)
+  for(int j = 0; j < image.height(); j += mosaicHeight * outputRatio)
   {
-    for(int i = 0; i < image.width(); i += mosaicWidth)
+    for(int i = 0; i < image.width(); i += mosaicWidth * outputRatio)
     {
-      painter.drawImage(i, j, vector[k].scaled(mosaicWidth, mosaicHeight));
+      painter.drawImage(i, j, vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio));
       ++k;
     }
   }
