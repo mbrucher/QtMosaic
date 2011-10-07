@@ -50,7 +50,7 @@ public slots:
   void editDatabase();
   void openDatabase();
 
-  void updateMosaic(QPixmap pixmap);
+  void updateMosaic(QImage image);
 };
 
 #endif // QTMOSAIC_H

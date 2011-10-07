@@ -8,6 +8,7 @@
 #include <QtGui/qmessagebox.h>
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "QtMosaicDatabaseModel.h"
 
@@ -135,5 +136,6 @@ void QtMosaicDatabaseModel::build()
   foreach(image, database)
   {
     thumbnails.push_back(image.second.scaled(scalingFactor, scalingFactor).toImage());
+    parallelDatabase.push_back(std::make_pair(image.first, image.second.toImage()));
   }
 }

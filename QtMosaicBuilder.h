@@ -54,7 +54,7 @@ public slots:
   void cancel();
 
 signals:
-  void updateMosaic(QPixmap pixmap);
+  void updateMosaic(QImage image);
 };
 
 #endif

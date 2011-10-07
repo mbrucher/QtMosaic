@@ -28,20 +28,21 @@ public:
   void removeElement(const QString& filename);
 
   typedef QList<std::pair<QString, QPixmap> > Database;
+  typedef QList<std::pair<QString, QImage> > ParallelDatabase;
   void build();
 
   const QVector<QImage>& getThumbnails() const
   {
     return thumbnails;
   }
-  const Database& getDatabase() const
+  const ParallelDatabase& getParallelDatabase() const
   {
-    return database;
+    return parallelDatabase;
   }
 
 private:
-  typedef QList<std::pair<QString, QPixmap> > Database;
-  QList<std::pair<QString, QPixmap> > database;
+  Database database;
+  ParallelDatabase parallelDatabase;
 
   QVector<QImage> thumbnails;
 

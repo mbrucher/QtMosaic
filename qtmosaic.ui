@@ -29,8 +29,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>279</width>
-             <height>155</height>
+             <width>276</width>
+             <height>178</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout">
@@ -63,6 +63,12 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -74,8 +80,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>279</width>
-             <height>154</height>
+             <width>276</width>
+             <height>115</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
@@ -146,8 +152,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>328</height>
+           <width>277</width>
+           <height>316</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
@@ -175,7 +181,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

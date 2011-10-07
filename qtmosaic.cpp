@@ -148,11 +148,13 @@ void QtMosaic::editDatabase()
 
 void QtMosaic::exec()
 {
-  connect(builder, SIGNAL(updateMosaic(QPixmap)), this, SLOT(updateMosaic(QPixmap)));
+  connect(builder, SIGNAL(updateMosaic(QImage)), this, SLOT(updateMosaic(QImage)));
   builder->create(ui.originalImage->pixmap());
 }
 
-void QtMosaic::updateMosaic(QPixmap pixmap)
+void QtMosaic::updateMosaic(QImage image)
 {
-  ui.mosaicImage->setPixmap(pixmap);
+  QPixmap newpixmap;
+  newpixmap.convertFromImage(image);
+  ui.mosaicImage->setPixmap(newpixmap);
 }

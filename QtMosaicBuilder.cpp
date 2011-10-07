@@ -40,7 +40,7 @@ void QtMosaicBuilder::processImage(QImage& image)
   {
     for(int i = 0; i < image.width(); i += processor.model->scalingFactor * processor.model->widthFactor)
     {
-      imageParts.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor));
+      imageParts.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor).scaled(processor.model->scalingFactor, processor.model->scalingFactor));
     }
   }
 
@@ -74,7 +74,7 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
       best = i;
     }
   }
-  image = model->getDatabase()[best].second.toImage();
+  image = model->getParallelDatabase()[best].second;
 }
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
@@ -114,7 +114,7 @@ float QtMosaicBuilder::QtMosaicProcessor::distance(const QRgb& rgb1, const QRgb&
 void QtMosaicBuilder::update()
 {
   if(future.isCanceled())
-  { 
+  {
     return;
   }
 
@@ -122,9 +122,7 @@ void QtMosaicBuilder::update()
   if(future.isFinished())
   {
     reconstructImage(image, imageParts);
-    QPixmap newpixmap;
-    newpixmap.convertFromImage(image);
-    emit updateMosaic(newpixmap);
+    emit updateMosaic(image);
     timer->stop();
     progress->deleteLater();
   }
