@@ -19,7 +19,7 @@ void QtMosaicBuilder::build(const QString& database)
   model->build();
 }
 
-void QtMosaicBuilder::create(const QPixmap* pixmap)
+void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float ratio)
 {
   if(pixmap == NULL)
   {
@@ -27,9 +27,6 @@ void QtMosaicBuilder::create(const QPixmap* pixmap)
   }
 
   image = pixmap->toImage();
-
-  QPixmap newpixmap;
-
   processImage(image);
 }
 
@@ -134,3 +131,33 @@ void QtMosaicBuilder::cancel()
   timer->stop();
   progress->deleteLater();
 }
+
+long QtMosaicBuilder::getDatabaseSize() const
+{
+  return model->getDatabase().size();
+}
+
+long QtMosaicBuilder::getDatabaseDefaultHeight() const
+{
+  if(getDatabaseSize() > 0)
+  {
+    return model->getDatabase()[0].second.height();
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+long QtMosaicBuilder::getDatabaseDefaultWidth() const
+{
+  if(getDatabaseSize() > 0)
+  {
+    return model->getDatabase()[0].second.width();
+  }
+  else
+  {
+    return 0;
+  }
+}
+

@@ -39,6 +39,10 @@ public:
   {
     return parallelDatabase;
   }
+  const Database& getDatabase() const
+  {
+    return database;
+  }
 
 private:
   Database database;

@@ -134,6 +134,15 @@ void QtMosaic::loadDatabase(QString filename)
 {
   database = filename;
   builder->build(filename);
+
+  ui.databaseSize->setText(QString::number(builder->getDatabaseSize()));
+  ui.mosaicHeight->setValue(builder->getDatabaseDefaultHeight());
+  ui.mosaicHeight->setMaximum(builder->getDatabaseDefaultHeight());
+  ui.mosaicWidth->setValue(builder->getDatabaseDefaultWidth());
+  ui.mosaicWidth->setMaximum(builder->getDatabaseDefaultWidth());
+  ui.outputRatio->setValue(1);
+
+  ui.databaseArea->setEnabled(true);
 }
 
 void QtMosaic::editDatabase()
@@ -149,7 +158,7 @@ void QtMosaic::editDatabase()
 void QtMosaic::exec()
 {
   connect(builder, SIGNAL(updateMosaic(QImage)), this, SLOT(updateMosaic(QImage)));
-  builder->create(ui.originalImage->pixmap());
+  builder->create(ui.originalImage->pixmap(), ui.mosaicHeight->value(), ui.mosaicWidth->value(), ui.outputRatio->value());
 }
 
 void QtMosaic::updateMosaic(QImage image)

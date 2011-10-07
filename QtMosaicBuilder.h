@@ -22,7 +22,7 @@ public:
   QtMosaicBuilder(QObject* parent = NULL);
 
   void build(const QString& database);
-  void create(const QPixmap* pixmap);
+  void create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float ratio);
 
   class QtMosaicProcessor
   {
@@ -34,6 +34,10 @@ public:
     static float distance(const QImage& image1, const QImage& image2);
     static float distance(const QRgb& rgb1, const QRgb& rgb2);
   };
+
+  long getDatabaseSize() const;
+  long getDatabaseDefaultHeight() const;
+  long getDatabaseDefaultWidth() const;
 
 private:
   void processImage(QImage& image);
