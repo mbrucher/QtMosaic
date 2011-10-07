@@ -2,6 +2,7 @@
  * \file QtMosaicBuilder.cpp
  */
 
+#include <iostream>
 #include <QtGui/qpainter.h>
 
 #include "QtMosaicBuilder.h"
@@ -26,6 +27,10 @@ void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaic
     return; 
   }
 
+  this->mosaicHeight = mosaicHeight;
+  this->mosaicWidth = mosaicWidth;
+  this->outputRatio = outputRatio;
+
   image = pixmap->toImage();
   processImage(image);
 }
@@ -33,11 +38,11 @@ void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaic
 void QtMosaicBuilder::processImage(QImage& image)
 {
   imageParts.clear();
-  for(int j = 0; j < image.height(); j += processor.model->scalingFactor * processor.model->heightFactor)
+  for(int j = 0; j < image.height(); j += mosaicHeight)
   {
-    for(int i = 0; i < image.width(); i += processor.model->scalingFactor * processor.model->widthFactor)
+    for(int i = 0; i < image.width(); i += mosaicWidth)
     {
-      imageParts.push_back(image.copy(i, j, processor.model->scalingFactor * processor.model->widthFactor, processor.model->scalingFactor * processor.model->heightFactor).scaled(processor.model->scalingFactor, processor.model->scalingFactor));
+      imageParts.push_back(image.copy(i, j, mosaicWidth, mosaicHeight).scaled(processor.model->scalingFactor, processor.model->scalingFactor));
     }
   }
 
@@ -79,11 +84,11 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
   QPainter painter(&image);
 
   int k = 0;
-  for(int j = 0; j < image.height(); j += processor.model->scalingFactor * processor.model->heightFactor)
+  for(int j = 0; j < image.height(); j += mosaicHeight)
   {
-    for(int i = 0; i < image.width(); i += processor.model->scalingFactor * processor.model->widthFactor)
+    for(int i = 0; i < image.width(); i += mosaicWidth)
     {
-      painter.drawImage(i, j, vector[k]);
+      painter.drawImage(i, j, vector[k].scaled(mosaicWidth, mosaicHeight));
       ++k;
     }
   }

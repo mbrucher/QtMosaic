@@ -53,6 +53,10 @@ private:
   QImage image;
   QVector<QImage> imageParts;
 
+  int mosaicHeight;
+  int mosaicWidth;
+  float outputRatio;
+
 public slots:
   void update();
   void cancel();
