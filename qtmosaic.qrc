@@ -1,8 +1,10 @@
 <RCC>
     <qresource prefix="/QtMosaic">
-        <file>Resources/editdatabase.png</file>
+        <file>Resources/new.png</file>
         <file>Resources/open.png</file>
-        <file>Resources/opendatabase.png</file>
         <file>Resources/save.png</file>
+        <file>Resources/exec.png</file>
+        <file>Resources/opendatabase.png</file>
+        <file>Resources/editdatabase.png</file>
     </qresource>
 </RCC>

@@ -28,14 +28,14 @@ void QtMosaic::createActions()
   openAct->setStatusTip(tr("Open an image"));
   connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+  execAct = new QAction(QIcon(":/QtMosaic/Resources/exec.png"), tr("&Exec"), this);
+  execAct->setStatusTip(tr("Create a new mosaic"));
+  connect(execAct, SIGNAL(triggered()), this, SLOT(exec()));
+
   saveAct = new QAction(QIcon(":/QtMosaic/Resources/save.png"), tr("&Save..."), this);
   saveAct->setShortcuts(QKeySequence::Save);
   saveAct->setStatusTip(tr("Save the mosaic to disk"));
   connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
-
-  execAct = new QAction(QIcon(":/QtMosaic/Resources/exec.png"), tr("&Exec"), this);
-  execAct->setStatusTip(tr("Create a new mosaic"));
-  connect(execAct, SIGNAL(triggered()), this, SLOT(exec()));
 
   exitAct = new QAction(QIcon(":/QtMosaic/Resources/close.png"), tr("&Quit"), this);
   exitAct->setShortcuts(QKeySequence::Close);
