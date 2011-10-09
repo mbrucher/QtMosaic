@@ -1,0 +1,20 @@
+Qt Mosaic
+=========
+
+Qt Mosaic is a small pet project to create photomosaics. From a photo database and a photo, it can generate traditional photomosaics.
+
+License
+-------
+QtMosaic is published under the GPL3
+
+Changelog
+---------
+
+0.1: first working version
+     - uses a linear search for mosaics
+	 - the search is based on 3x3 reduction of the mosaics
+	 - can use an output ratio to enlarge the original picture
+	 - the mosaic database is created with mosaics of 36x48 (not modifiable now)
+	 - can reduce the size of the mosaics if needed
+	 
+	 
