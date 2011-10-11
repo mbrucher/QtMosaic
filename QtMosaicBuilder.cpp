@@ -116,13 +116,15 @@ float QtMosaicBuilder::QtMosaicProcessor::distance(const QRgb& rgb1, const QRgb&
 
 void QtMosaicBuilder::update()
 {
-  if(future.isCanceled())
+  if(future.isCanceled() && future.isFinished())
   {
+    timer->stop();
+    progress->deleteLater();
     return;
   }
 
   progress->setValue(future.progressValue());
-  if(future.isFinished())
+  if(!future.isCanceled() && future.isFinished())
   {
     reconstructImage(image, imageParts);
     emit updateMosaic(image);
@@ -134,8 +136,6 @@ void QtMosaicBuilder::update()
 void QtMosaicBuilder::cancel()
 {
   future.cancel();
-  timer->stop();
-  progress->deleteLater();
 }
 
 long QtMosaicBuilder::getDatabaseSize() const
