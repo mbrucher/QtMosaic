@@ -28,6 +28,10 @@ void QtMosaic::createActions()
   openAct->setStatusTip(tr("Open an image"));
   connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+  reloadAct = new QAction(QIcon(":/QtMosaic/Resources/reload.png"), tr("&Reload"), this);
+  reloadAct->setStatusTip(tr("Reload the original photo"));
+  connect(reloadAct, SIGNAL(triggered()), this, SLOT(reload()));
+
   execAct = new QAction(QIcon(":/QtMosaic/Resources/exec.png"), tr("&Exec"), this);
   execAct->setStatusTip(tr("Create a new mosaic"));
   connect(execAct, SIGNAL(triggered()), this, SLOT(exec()));
@@ -64,6 +68,7 @@ void QtMosaic::createToolbar()
 void QtMosaic::createMenubar()
 {
   ui.menuFile->addAction(openAct);
+  ui.menuFile->addAction(reloadAct);
   ui.menuFile->addAction(saveAct);
   ui.menuFile->addAction(execAct);
   ui.menuFile->addSeparator();
@@ -82,7 +87,18 @@ void QtMosaic::open()
 {
   QString fileName = QFileDialog::getOpenFileName(this);
   if (!fileName.isEmpty())
+  {
+    originalPhoto = fileName;
     loadFile(fileName);
+  }
+}
+
+void QtMosaic::reload()
+{
+  if (!originalPhoto.isEmpty())
+  {
+    loadFile(originalPhoto);
+  }
 }
 
 void QtMosaic::loadFile(QString fileName)

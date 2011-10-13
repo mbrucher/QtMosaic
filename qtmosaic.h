@@ -23,6 +23,7 @@ public:
 private:
 	Ui::QtMosaicClass ui;
   QAction *openAct;
+  QAction *reloadAct;
   QAction *saveAct;
   QAction *execAct;
   QAction *exitAct;
@@ -41,9 +42,11 @@ private:
   QtMosaicBuilder* builder;
 
   QString database;
+  QString originalPhoto;
 
 public slots:
   void open();
+  void reload();
   void save();
   void exec();
 
