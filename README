@@ -10,11 +10,15 @@ QtMosaic is published under the GPL3
 Changelog
 ---------
 
+0.2:
+   - fixed a crash bug when cancelling the construction of a photomosaic (#3)
+   - can now reload a photo (#2)
+   - keeps track of the latest used folder (#1)
+
 0.1: first working version
-     - uses a linear search for mosaics
+   - uses a linear search for mosaics
 	 - the search is based on 3x3 reduction of the mosaics
 	 - can use an output ratio to enlarge the original picture
 	 - the mosaic database is created with mosaics of 36x48 (not modifiable now)
 	 - can reduce the size of the mosaics if needed
-	 
 	 
