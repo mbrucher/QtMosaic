@@ -105,6 +105,7 @@
     <ClCompile Include="QtMosaicBuilder.cpp" />
     <ClCompile Include="qtmosaicdatabase.cpp" />
     <ClCompile Include="QtMosaicDatabaseModel.cpp" />
+    <ClCompile Include="QtMosaicOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qtmosaic.h">
@@ -155,6 +156,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\qtmain" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I." "-I." "-I."</Command>
     </CustomBuild>
     <ClInclude Include="QtMosaicDatabaseModel.h" />
+    <ClInclude Include="QtMosaicOptions.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
