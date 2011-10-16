@@ -11,6 +11,7 @@
 
 #include "qtmosaicdatabase.h"
 #include "QtMosaicDatabaseModel.h"
+#include "QtMosaicOptions.h"
 
 QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WFlags flags)
   : QMainWindow(parent, flags)
@@ -92,9 +93,12 @@ void QtMosaicDatabase::newDatabase()
 
 void QtMosaicDatabase::openDatabase()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QString(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
+  {
+    QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
     loadDatabase(fileName);
+  }
 }
 
 void QtMosaicDatabase::loadDatabase(QString fileName)
@@ -104,9 +108,12 @@ void QtMosaicDatabase::loadDatabase(QString fileName)
 
 void QtMosaicDatabase::saveDatabase()
 {
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save a Mosaic database"), QString(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
+  {
+    QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
     saveDatabase(fileName);
+  }
 }
 
 void QtMosaicDatabase::saveDatabase(QString fileName)

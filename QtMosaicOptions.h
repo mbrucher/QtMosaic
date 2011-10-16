@@ -18,7 +18,7 @@ public:
   static QtMosaicOptions& getInstance();
 
   QString getDefaultFolder() const;
-  void getDefaultFolder(const QString& defaultFolder);
+  void setDefaultFolder(const QString& defaultFolder);
 };
 
 #endif

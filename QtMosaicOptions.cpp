@@ -20,7 +20,7 @@ QString QtMosaicOptions::getDefaultFolder() const
   return defaultFolder;
 }
 
-void QtMosaicOptions::getDefaultFolder(const QString& defaultFolder)
+void QtMosaicOptions::setDefaultFolder(const QString& defaultFolder)
 {
   this->defaultFolder = defaultFolder;
 }
