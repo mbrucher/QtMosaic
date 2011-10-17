@@ -35,16 +35,31 @@ void QtMosaicBuilder::create(const QPixmap* pixmap, int mosaicHeight, int mosaic
   processImage(image);
 }
 
-void QtMosaicBuilder::processImage(QImage& image)
+void QtMosaicBuilder::createParts(QImage& image)
 {
+  QProgressDialog progress("Destruction in progress.", "Cancel", 0, (image.height() + 1) * (image.width() + 1) / (mosaicHeight * mosaicWidth), dynamic_cast<QWidget*>(this->parent()));
+  progress.setWindowModality(Qt::WindowModal);;
+
   imageParts.clear();
+  int k = 0;
   for(int j = 0; j < image.height(); j += mosaicHeight)
   {
     for(int i = 0; i < image.width(); i += mosaicWidth)
     {
+      progress.setValue(k);
       imageParts.push_back(image.copy(i, j, mosaicWidth, mosaicHeight).scaled(processor.model->scalingFactor, processor.model->scalingFactor));
+      ++k;
+      if(progress.wasCanceled())
+      {
+        return;
+      }
     }
   }
+}
+
+void QtMosaicBuilder::processImage(QImage& image)
+{
+  createParts(image);
 
   future = QtConcurrent::map(imageParts, processor);
   progress = new QProgressDialog("Operation in progress.", "Cancel", future.progressMinimum(), future.progressMaximum(), dynamic_cast<QWidget*>(this->parent()));
@@ -81,6 +96,9 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
 {
+  QProgressDialog progress("Reconstruction in progress.", "Cancel", 0, vector.size(), dynamic_cast<QWidget*>(this->parent()));
+  progress.setWindowModality(Qt::WindowModal);;
+
   image = image.scaled(image.width() * outputRatio, image.height() * outputRatio);
   QPainter painter(&image);
 
@@ -89,8 +107,13 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
   {
     for(int i = 0; i < image.width(); i += mosaicWidth * outputRatio)
     {
+      progress.setValue(k);
       painter.drawImage(i, j, vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio));
       ++k;
+      if(progress.wasCanceled())
+      {
+        return;
+      }
     }
   }
 }

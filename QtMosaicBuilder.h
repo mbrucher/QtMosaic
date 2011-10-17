@@ -41,6 +41,7 @@ public:
 
 private:
   void processImage(QImage& image);
+  void createParts(QImage& image);
   void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
 
   QFuture<void> future;
