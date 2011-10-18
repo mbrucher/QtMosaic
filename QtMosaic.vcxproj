@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AntipoleTree.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_qtmosaic.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -132,6 +133,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AntipoleTree.h" />
     <ClInclude Include="GeneratedFiles\ui_qtmosaic.h" />
     <ClInclude Include="GeneratedFiles\ui_QtMosaicDatabase.h" />
     <CustomBuild Include="qtmosaicdatabase.h">

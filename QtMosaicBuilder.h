@@ -12,6 +12,8 @@
 #include <QtGui/qprogressdialog.h>
 #include <QtConcurrentMap>
 
+#include "AntipoleTree.h"
+
 class QtMosaicDatabaseModel;
 
 class QtMosaicBuilder: public QObject
@@ -30,6 +32,7 @@ public:
     void operator()(QImage& image);
 
     QtMosaicDatabaseModel* model;
+    AntipoleTree* tree;
 
     static float distance(const QImage& image1, const QImage& image2);
     static float distance(const QRgb& rgb1, const QRgb& rgb2);
@@ -49,6 +52,7 @@ private:
 
   QtMosaicProcessor processor;
   QtMosaicDatabaseModel* model;
+  AntipoleTree tree;
 
   QImage image;
   QVector<QImage> imageParts;
