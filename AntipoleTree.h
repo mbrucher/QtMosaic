@@ -9,6 +9,15 @@ class AntipoleNode
 {
 public:
   virtual ~AntipoleNode();
+  virtual bool isLeaf() = 0;
+};
+
+class AntipoleInternalNode: public AntipoleNode
+{
+  AntipoleNode* left;
+  AntipoleNode* right;
+public:
+  virtual ~AntipoleInternalNode();
 
   virtual bool isLeaf();
 };

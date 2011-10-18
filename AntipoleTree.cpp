@@ -8,7 +8,13 @@ AntipoleNode::~AntipoleNode()
 {
 }
 
-bool AntipoleNode::isLeaf()
+AntipoleInternalNode::~AntipoleInternalNode()
+{
+  delete right;
+  delete left;
+}
+
+bool AntipoleInternalNode::isLeaf()
 {
   return false;
 }
