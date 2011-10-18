@@ -8,6 +8,7 @@
 #include "qtmosaic.h"
 #include "qtmosaicdatabase.h"
 #include "QtMosaicBuilder.h"
+#include "QtMosaicOptions.h"
 
 QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
   : QMainWindow(parent, flags), databaseUI(NULL)
@@ -85,9 +86,10 @@ QtMosaic::~QtMosaic()
 
 void QtMosaic::open()
 {
-  QString fileName = QFileDialog::getOpenFileName(this);
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open an image"), QtMosaicOptions::getInstance().getDefaultFolder());
   if (!fileName.isEmpty())
   {
+    QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
     originalPhoto = fileName;
     loadFile(fileName);
   }
@@ -122,9 +124,10 @@ void QtMosaic::save()
       tr("No image loaded yet"));
     return;
   }
-  QString fileName = QFileDialog::getSaveFileName(this);
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save an image"), QtMosaicOptions::getInstance().getDefaultFolder());
   if (!fileName.isEmpty())
   {
+    QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
     saveFile(fileName);
   }
   else
@@ -141,9 +144,12 @@ void QtMosaic::saveFile(QString fileName)
 
 void QtMosaic::openDatabase()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QString(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
+  {
+    QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
     loadDatabase(fileName);
+  }
 }
 
 void QtMosaic::loadDatabase(QString filename)

@@ -11,7 +11,6 @@ DEFINES += QT_LARGEFILE_SUPPORT
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     .
-PRECOMPILED_HEADER = StdAfx.h
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug

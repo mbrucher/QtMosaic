@@ -9,12 +9,14 @@ message("You are running qmake on a generated .pro file. This may not work!")
 
 HEADERS += ./QtMosaicBuilder.h \
     ./QtMosaicDatabaseModel.h \
+    ./QtMosaicOptions.h \
     ./resource.h \
     ./qtmosaic.h \
     ./qtmosaicdatabase.h
 SOURCES += ./main.cpp \
     ./qtmosaic.cpp \
     ./QtMosaicBuilder.cpp \
+    ./QtMosaicOptions.cpp \
     ./qtmosaicdatabase.cpp \
     ./QtMosaicDatabaseModel.cpp
 FORMS += ./qtmosaic.ui \
