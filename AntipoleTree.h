@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include <qimage.h>
+
 class AntipoleNode
 {
   std::vector<long> imagesReferences;
@@ -44,7 +46,15 @@ class AntipoleTree
 public:
   AntipoleTree(void);
 
+  void build(const std::vector<std::vector<float> >& thumbnails);
+
   long getClosestThumbnail(const std::vector<float>& image);
+};
+
+struct HelperFunctions
+{
+  static float distance(const std::vector<float>& image1, const std::vector<float>& image2);
+  static std::vector<float> convert(const QImage& image);
 };
 
 #endif
