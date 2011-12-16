@@ -45,6 +45,7 @@ private:
   void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
 
   QImage adaptImage(const QImage& image, const QImage& reference) const;
+  void computeMeans(const QImage& image, int& red, int& blue, int& green) const;
 
   QFuture<void> future;
   QProgressDialog* progress;

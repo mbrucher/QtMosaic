@@ -110,7 +110,7 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
     for(int i = 0; i < image.width(); i += widthOutSize)
     {
       progress.setValue(k);
-      painter.drawImage(i, j, adaptImage(vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio), imageParts[i / widthOutSize + j / heightOutSize * (image.width() + widthOutSize - 1) / widthOutSize]));
+      painter.drawImage(i, j, adaptImage(vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio), imageParts[k]));
       ++k;
       if(progress.wasCanceled())
       {
@@ -120,9 +120,48 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
   }
 }
 
+void QtMosaicBuilder::computeMeans(const QImage& image, int& red, int& blue, int& green) const
+{
+  red = 0;
+  blue = 0;
+  green = 0;
+
+  for(int j = 0; j < image.height(); ++j)
+  {
+    for(int i = 0; i < image.width(); ++i)
+    {
+      const QRgb& rgb = image.pixel(i, j);
+      red += qRed(rgb);
+      blue += qBlue(rgb);
+      green += qGreen(rgb);
+    }
+  }
+
+  red /= image.height() * image.width();
+  blue /= image.height() * image.width();
+  green /= image.height() * image.width();
+}
+
 QImage QtMosaicBuilder::adaptImage(const QImage& image, const QImage& reference) const
 {
-  return image;
+  int red_ref, blue_ref, green_ref;
+  int red_img, blue_img, green_img;
+  computeMeans(reference, red_ref, blue_ref, green_ref);
+  computeMeans(image, red_img, blue_img, green_img);
+
+  QImage newImage = image;
+  for(int j = 0; j < newImage.height(); ++j)
+  {
+    for(int i = 0; i < newImage.width(); ++i)
+    {
+      const QRgb& rgb = newImage.pixel(i, j);
+      int red = qRed(rgb) + red_ref - red_img;
+      int blue = qBlue(rgb) + blue_ref - blue_img;
+      int green = qGreen(rgb) + green_ref - green_ref;
+      newImage.setPixel(i, j, qRgb(red, blue, green));
+    }
+  }
+  return newImage;
 }
 
 float QtMosaicBuilder::QtMosaicProcessor::distance(const QImage& image1, const QImage& image2)
