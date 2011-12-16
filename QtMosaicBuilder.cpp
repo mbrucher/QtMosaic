@@ -103,12 +103,14 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
   QPainter painter(&image);
 
   int k = 0;
-  for(int j = 0; j < image.height(); j += mosaicHeight * outputRatio)
+  int widthOutSize = mosaicWidth * outputRatio;
+  int heightOutSize = mosaicHeight * outputRatio;
+  for(int j = 0; j < image.height(); j += heightOutSize)
   {
-    for(int i = 0; i < image.width(); i += mosaicWidth * outputRatio)
+    for(int i = 0; i < image.width(); i += widthOutSize)
     {
       progress.setValue(k);
-      painter.drawImage(i, j, vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio));
+      painter.drawImage(i, j, adaptImage(vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio), imageParts[i / widthOutSize + j / heightOutSize * (image.width() + widthOutSize - 1) / widthOutSize]));
       ++k;
       if(progress.wasCanceled())
       {
@@ -116,6 +118,11 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
       }
     }
   }
+}
+
+QImage QtMosaicBuilder::adaptImage(const QImage& image, const QImage& reference) const
+{
+  return image;
 }
 
 float QtMosaicBuilder::QtMosaicProcessor::distance(const QImage& image1, const QImage& image2)

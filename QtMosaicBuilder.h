@@ -44,6 +44,8 @@ private:
   void createParts(QImage& image);
   void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
 
+  QImage adaptImage(const QImage& image, const QImage& reference) const;
+
   QFuture<void> future;
   QProgressDialog* progress;
   QTimer* timer;
