@@ -44,9 +44,6 @@ private:
   void createParts(QImage& image);
   void reconstructImage(QImage& image, const QVector<QImage>& vector) const;
 
-  QImage adaptImage(const QImage& image, const QImage& reference) const;
-  void computeMeans(const QImage& image, int& red, int& blue, int& green) const;
-
   QFuture<void> future;
   QProgressDialog* progress;
   QTimer* timer;
@@ -68,5 +65,8 @@ public slots:
 signals:
   void updateMosaic(QImage image);
 };
+
+QImage adaptImage(const QImage& image, const QImage& reference);
+void computeMeans(const QImage& image, long& red, long& green, long& blue);
 
 #endif
