@@ -6,7 +6,7 @@
 #define ANTIPOLETREE
 
 #include <vector>
-#include <set>
+#include <map>
 
 #include <qimage.h>
 
@@ -38,13 +38,15 @@ public:
 
 class AntipoleLeaf: public AntipoleNode
 {
-  std::set<long> inner_thumbnails;
+  typedef std::map<long, long> MatchingThumbnails;
+  MatchingThumbnails inner_thumbnails;
 public:
   AntipoleLeaf(const AntipoleTree* tree);
   virtual ~AntipoleLeaf();
 
   virtual bool isLeaf() const;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image) const;
+  void setMatching(const MatchingThumbnails& inner_thumbnails);
 };
 
 class AntipoleTree

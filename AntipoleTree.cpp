@@ -71,7 +71,25 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
       closest = it - thumbnails.begin();
     }
   }
-  return std::make_pair(closest, mindist); // add the local index to global index conversion
+
+  if(inner_thumbnails.empty())
+  {
+    return std::make_pair(closest, mindist);
+  }
+  else
+  {
+    MatchingThumbnails::const_iterator it = inner_thumbnails.find(closest);
+    if(it == inner_thumbnails.end())
+    {
+      throw std::runtime_error("Matching map does not have the needed thumbnail");
+    }
+    return std::make_pair((*it).second, mindist);
+  }
+}
+
+void AntipoleLeaf::setMatching(const MatchingThumbnails& inner_thumbnails)
+{
+  this->inner_thumbnails = inner_thumbnails;
 }
 
 AntipoleTree::AntipoleTree(void)
