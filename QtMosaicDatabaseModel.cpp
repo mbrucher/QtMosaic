@@ -132,10 +132,15 @@ void QtMosaicDatabaseModel::removeElement(const QString& filename)
 void QtMosaicDatabaseModel::build()
 {
   Database::value_type image;
+  std::vector<std::vector<float> > antipole_database;
 
   foreach(image, database)
   {
-    thumbnails.push_back(image.second.scaled(scalingFactor, scalingFactor).toImage());
+    QImage temp = image.second.scaled(scalingFactor, scalingFactor).toImage();
+    thumbnails.push_back(temp);
     parallelDatabase.push_back(std::make_pair(image.first, image.second.toImage()));
+
+    antipole_database.push_back(HelperFunctions::convert(temp));
   }
+  tree.build(antipole_database);
 }

@@ -18,7 +18,7 @@ AntipoleNode::~AntipoleNode()
 }
 
 AntipoleInternalNode::AntipoleInternalNode(const AntipoleTree* tree)
-  :AntipoleNode(tree)
+  :AntipoleNode(tree), right(NULL), left(NULL)
 {
 }
 
@@ -87,6 +87,7 @@ AntipoleTree::~AntipoleTree()
 void AntipoleTree::build(const std::vector<std::vector<float> >& thumbnails)
 {
   this->thumbnails = thumbnails;
+  delete root;
   root = new AntipoleLeaf(this);
 }
 
