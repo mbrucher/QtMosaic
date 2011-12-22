@@ -32,7 +32,9 @@ public:
 
 class AntipoleLeaf: public AntipoleNode
 {
-public:
+  std::vector<long> inner_thumbnails;
+  std::vector<long> local_index_to_global_index;
+  public:
   virtual ~AntipoleLeaf();
 
   virtual bool isLeaf();

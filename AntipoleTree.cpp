@@ -55,7 +55,7 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
       closest = it - thumbnails.begin();
     }
   }
-  return std::make_pair(closest, mindist);
+  return std::make_pair(closest, mindist); // add the local index to global index conversion
 }
 
 AntipoleTree::AntipoleTree(void)
