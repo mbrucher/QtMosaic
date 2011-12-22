@@ -108,6 +108,11 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
   }
 }
 
+long AntipoleTree::getClosestThumbnail(const QImage& image) const
+{
+  return getClosestThumbnail(HelperFunctions::convert(image));
+}
+
 float HelperFunctions::distance2(const std::vector<float>& object1, const std::vector<float>& object2)
 {
   float dist = 0;

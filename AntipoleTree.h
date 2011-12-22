@@ -59,6 +59,7 @@ public:
   void build(const std::vector<std::vector<float> >& thumbnails);
 
   long getClosestThumbnail(const std::vector<float>& image) const;
+  long getClosestThumbnail(const QImage& image) const;
 };
 
 struct HelperFunctions

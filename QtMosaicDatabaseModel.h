@@ -45,6 +45,10 @@ public:
   {
     return database;
   }
+  const AntipoleTree& getTree() const
+  {
+    return tree;
+  }
 
 private:
   Database database;
