@@ -17,6 +17,16 @@ AntipoleNode::~AntipoleNode()
 {
 }
 
+void AntipoleNode::setCenter(const std::vector<float>& center)
+{
+  this->center = center;
+}
+
+void AntipoleNode::setRadius(float radius)
+{
+  this->radius = radius;
+}
+
 float AntipoleNode::minimumDistance(const std::vector<float>& image) const
 {
   return HelperFunctions::distance2(image, center) - radius;
@@ -31,6 +41,16 @@ AntipoleInternalNode::~AntipoleInternalNode()
 {
   delete right;
   delete left;
+}
+
+void AntipoleInternalNode::setLeft(AntipoleNode* left)
+{
+  this->left = left;
+}
+
+void AntipoleInternalNode::setRight(AntipoleNode* right)
+{
+  this->right = right;
 }
 
 bool AntipoleInternalNode::isLeaf() const
@@ -100,14 +120,14 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
     }
   }
 
-  if(inner_thumbnails.empty())
+  if(matching_thumbnails.empty())
   {
     return std::make_pair(closest, mindist);
   }
   else
   {
-    MatchingThumbnails::const_iterator it = inner_thumbnails.find(closest);
-    if(it == inner_thumbnails.end())
+    MatchingThumbnails::const_iterator it = matching_thumbnails.find(closest);
+    if(it == matching_thumbnails.end())
     {
       throw std::runtime_error("Matching map does not have the needed thumbnail");
     }
@@ -115,9 +135,9 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
   }
 }
 
-void AntipoleLeaf::setMatching(const MatchingThumbnails& inner_thumbnails)
+void AntipoleLeaf::setMatching(const MatchingThumbnails& matching_thumbnails)
 {
-  this->inner_thumbnails = inner_thumbnails;
+  this->matching_thumbnails = matching_thumbnails;
 }
 
 AntipoleTree::AntipoleTree(void)

@@ -20,9 +20,12 @@ protected:
   std::vector<float> center;
 public:
   AntipoleNode(const AntipoleTree* tree);
+  virtual ~AntipoleNode();
+
+  void setCenter(const std::vector<float>& center);
+  void setRadius(float radius);
   float minimumDistance(const std::vector<float>& image) const;
 
-  virtual ~AntipoleNode();
   virtual bool isLeaf() const = 0;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, float max_dist) const = 0;
 };
@@ -37,6 +40,9 @@ public:
   AntipoleInternalNode(const AntipoleTree* tree);
   virtual ~AntipoleInternalNode();
 
+  void setLeft(AntipoleNode* left);
+  void setRight(AntipoleNode* right);
+
   virtual bool isLeaf() const;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, float max_dist) const;
 };
@@ -44,7 +50,7 @@ public:
 class AntipoleLeaf: public AntipoleNode
 {
   typedef std::map<long, long> MatchingThumbnails;
-  MatchingThumbnails inner_thumbnails;
+  MatchingThumbnails matching_thumbnails;
 public:
   AntipoleLeaf(const AntipoleTree* tree);
   virtual ~AntipoleLeaf();
