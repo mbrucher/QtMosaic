@@ -8,7 +8,17 @@
 
 #include "AntipoleTree.h"
 
+AntipoleNode::AntipoleNode(const AntipoleTree* tree)
+  :tree(tree)
+{
+}
+
 AntipoleNode::~AntipoleNode()
+{
+}
+
+AntipoleInternalNode::AntipoleInternalNode(const AntipoleTree* tree)
+  :AntipoleNode(tree)
 {
 }
 
@@ -18,27 +28,33 @@ AntipoleInternalNode::~AntipoleInternalNode()
   delete left;
 }
 
-bool AntipoleInternalNode::isLeaf()
+bool AntipoleInternalNode::isLeaf() const
 {
   return false;
 }
 
-std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vector<float>& image, const std::vector<std::vector<float> >& thumbnails)
+std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vector<float>& image) const
 {
   throw;
+}
+
+AntipoleLeaf::AntipoleLeaf(const AntipoleTree* tree)
+  :AntipoleNode(tree)
+{
 }
 
 AntipoleLeaf::~AntipoleLeaf()
 {
 }
 
-bool AntipoleLeaf::isLeaf()
+bool AntipoleLeaf::isLeaf() const
 {
   return true;
 }
 
-std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float>& image, const std::vector<std::vector<float> >& thumbnails)
+std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float>& image) const
 {
+  const std::vector<std::vector<float> >& thumbnails = tree->getThumbnails();
   if(thumbnails.empty())
   {
     throw std::runtime_error("Empty set for clostest thumbnail");
@@ -63,16 +79,27 @@ AntipoleTree::AntipoleTree(void)
 {
 }
 
+AntipoleTree::~AntipoleTree()
+{
+  delete root;
+}
+
 void AntipoleTree::build(const std::vector<std::vector<float> >& thumbnails)
 {
   this->thumbnails = thumbnails;
+  root = new AntipoleLeaf(this);
 }
 
-long AntipoleTree::getClosestThumbnail(const std::vector<float>& image)
+const std::vector<std::vector<float> >& AntipoleTree::getThumbnails() const
+{
+  return thumbnails;
+}
+
+long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
 {
   if(root)
   {
-    return root->getClosestThumbnail(image, thumbnails).first;
+    return root->getClosestThumbnail(image).first;
   }
   else
   {

@@ -6,16 +6,21 @@
 #define ANTIPOLETREE
 
 #include <vector>
+#include <set>
 
 #include <qimage.h>
 
+class AntipoleTree;
+
 class AntipoleNode
 {
-  std::vector<long> imagesReferences;
+protected:
+  const AntipoleTree* tree;
 public:
+  AntipoleNode(const AntipoleTree* tree);
   virtual ~AntipoleNode();
-  virtual bool isLeaf() = 0;
-  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, const std::vector<std::vector<float> >& thumbnails) = 0;
+  virtual bool isLeaf() const = 0;
+  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image) const = 0;
 };
 
 class AntipoleInternalNode: public AntipoleNode
@@ -24,21 +29,22 @@ class AntipoleInternalNode: public AntipoleNode
   AntipoleNode* right;
   float radius;
 public:
+  AntipoleInternalNode(const AntipoleTree* tree);
   virtual ~AntipoleInternalNode();
 
-  virtual bool isLeaf();
-  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, const std::vector<std::vector<float> >& thumbnails);
+  virtual bool isLeaf() const;
+  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image) const;
 };
 
 class AntipoleLeaf: public AntipoleNode
 {
-  std::vector<long> inner_thumbnails;
-  std::vector<long> local_index_to_global_index;
-  public:
+  std::set<long> inner_thumbnails;
+public:
+  AntipoleLeaf(const AntipoleTree* tree);
   virtual ~AntipoleLeaf();
 
-  virtual bool isLeaf();
-  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, const std::vector<std::vector<float> >& thumbnails);
+  virtual bool isLeaf() const;
+  virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image) const;
 };
 
 class AntipoleTree
@@ -47,10 +53,12 @@ class AntipoleTree
   AntipoleNode* root;
 public:
   AntipoleTree(void);
+  ~AntipoleTree();
 
+  const std::vector<std::vector<float> >& getThumbnails() const;
   void build(const std::vector<std::vector<float> >& thumbnails);
 
-  long getClosestThumbnail(const std::vector<float>& image);
+  long getClosestThumbnail(const std::vector<float>& image) const;
 };
 
 struct HelperFunctions
