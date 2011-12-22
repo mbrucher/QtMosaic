@@ -10,3 +10,11 @@
 *.exe
 /Debug
 /ipch
+/debug
+/release
+/Makefile
+/Makefile.Release
+/Makefile.Debug
+*.mosaic
+*.jpg
+*.JPG
