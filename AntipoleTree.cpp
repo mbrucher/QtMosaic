@@ -17,6 +17,11 @@ AntipoleNode::~AntipoleNode()
 {
 }
 
+float AntipoleNode::minimumDistance(const std::vector<float>& image) const
+{
+  return HelperFunctions::distance2(image, center) - radius;
+}
+
 AntipoleInternalNode::AntipoleInternalNode(const AntipoleTree* tree)
   :AntipoleNode(tree), right(NULL), left(NULL)
 {
@@ -33,9 +38,32 @@ bool AntipoleInternalNode::isLeaf() const
   return false;
 }
 
-std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vector<float>& image) const
+std::pair<long, float> AntipoleInternalNode::getBestSubnode(const AntipoleNode* node, const std::vector<float>& image, const std::pair<long, float>& current_best) const
 {
-  throw;
+  if(node->minimumDistance(image) < current_best.second)
+  {
+    std::pair<long, float> best_node = left->getClosestThumbnail(image, current_best.second);
+    if (best_node.second < current_best.second)
+    {
+      return best_node;
+    }
+  }
+  return current_best;
+}
+
+std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vector<float>& image, float max_dist) const
+{
+  std::pair<long, float> best = std::make_pair(-1, max_dist);
+
+  if(left)
+  {
+    best = getBestSubnode(left, image, best);
+  }
+  if(right)
+  {
+    best = getBestSubnode(right, image, best);
+  }
+  return best;
 }
 
 AntipoleLeaf::AntipoleLeaf(const AntipoleTree* tree)
@@ -52,7 +80,7 @@ bool AntipoleLeaf::isLeaf() const
   return true;
 }
 
-std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float>& image) const
+std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float>& image, float max_dist) const
 {
   const std::vector<std::vector<float> >& thumbnails = tree->getThumbnails();
   if(thumbnails.empty())
@@ -118,7 +146,7 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
 {
   if(root)
   {
-    return root->getClosestThumbnail(image).first;
+    return root->getClosestThumbnail(image, std::numeric_limits<float>::max()).first;
   }
   else
   {
