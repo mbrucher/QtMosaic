@@ -91,7 +91,7 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
       best = i;
     }
   }
-  image = model->getParallelDatabase()[best].second;
+  image = adaptImage(model->getParallelDatabase()[best].second, image);
 }
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
@@ -103,9 +103,11 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
   QPainter painter(&image);
 
   int k = 0;
-  for(int j = 0; j < image.height(); j += mosaicHeight * outputRatio)
+  int widthOutSize = mosaicWidth * outputRatio;
+  int heightOutSize = mosaicHeight * outputRatio;
+  for(int j = 0; j < image.height(); j += heightOutSize)
   {
-    for(int i = 0; i < image.width(); i += mosaicWidth * outputRatio)
+    for(int i = 0; i < image.width(); i += widthOutSize)
     {
       progress.setValue(k);
       painter.drawImage(i, j, vector[k].scaled(mosaicWidth * outputRatio, mosaicHeight * outputRatio));
@@ -116,6 +118,53 @@ void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vec
       }
     }
   }
+}
+
+void computeMeans(const QImage& image, long& red, long& green, long& blue)
+{
+  red = 0;
+  green = 0;
+  blue = 0;
+
+  for(int j = 0; j < image.height(); ++j)
+  {
+    for(int i = 0; i < image.width(); ++i)
+    {
+      const QRgb& rgb = image.pixel(i, j);
+      red += qRed(rgb);
+      green += qGreen(rgb);
+      blue += qBlue(rgb);
+    }
+  }
+
+  red /= image.height() * image.width();
+  green /= image.height() * image.width();
+  blue /= image.height() * image.width();
+}
+
+QImage adaptImage(const QImage& image, const QImage& reference)
+{
+  long red_ref, blue_ref, green_ref;
+  long red_img, blue_img, green_img;
+  computeMeans(reference, red_ref, green_ref, blue_ref);
+  computeMeans(image, red_img, green_img, blue_img);
+
+  QImage newImage = image;
+  for(int j = 0; j < newImage.height(); ++j)
+  {
+    for(int i = 0; i < newImage.width(); ++i)
+    {
+      const QRgb& rgb = newImage.pixel(i, j);
+      int red = qRed(rgb) + red_ref - red_img;
+      int blue = qBlue(rgb) + blue_ref - blue_img;
+      int green = qGreen(rgb) + green_ref - green_ref;
+      red = std::min(std::max(0, red), 255);
+      blue = std::min(std::max(0, blue), 255);
+      green = std::min(std::max(0, green), 255);
+      newImage.setPixel(i, j, qRgb(red, green, blue));
+    }
+  }
+  return newImage;
 }
 
 float QtMosaicBuilder::QtMosaicProcessor::distance(const QImage& image1, const QImage& image2)

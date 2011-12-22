@@ -8,6 +8,8 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/qlist.h>
 
+#include "AntipoleTree.h"
+
 class QtMosaicDatabaseModel :
   public QAbstractListModel
 {
@@ -47,6 +49,7 @@ public:
 private:
   Database database;
   ParallelDatabase parallelDatabase;
+  AntipoleTree tree;
 
   QVector<QImage> thumbnails;
 

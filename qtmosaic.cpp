@@ -179,8 +179,16 @@ void QtMosaic::editDatabase()
 
 void QtMosaic::exec()
 {
-  connect(builder, SIGNAL(updateMosaic(QImage)), this, SLOT(updateMosaic(QImage)));
-  builder->create(ui.originalImage->pixmap(), ui.mosaicHeight->value(), ui.mosaicWidth->value(), ui.outputRatio->value());
+  if(database != "")
+  {
+    connect(builder, SIGNAL(updateMosaic(QImage)), this, SLOT(updateMosaic(QImage)));
+    builder->create(ui.originalImage->pixmap(), ui.mosaicHeight->value(), ui.mosaicWidth->value(), ui.outputRatio->value());
+  }
+  else
+  {
+    QMessageBox::information(this, tr("Image Viewer"),
+      tr("You need to load a database first"));
+  }
 }
 
 void QtMosaic::updateMosaic(QImage image)

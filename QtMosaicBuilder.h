@@ -66,4 +66,7 @@ signals:
   void updateMosaic(QImage image);
 };
 
+QImage adaptImage(const QImage& image, const QImage& reference);
+void computeMeans(const QImage& image, long& red, long& green, long& blue);
+
 #endif
