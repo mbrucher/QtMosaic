@@ -7,7 +7,6 @@
 
 #include <vector>
 #include <map>
-
 #include <qimage.h>
 
 class AntipoleTree;

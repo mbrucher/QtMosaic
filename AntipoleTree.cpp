@@ -167,6 +167,7 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
   if(root)
   {
     return root->getClosestThumbnail(image, std::numeric_limits<float>::max()).first;
+
   }
   else
   {
