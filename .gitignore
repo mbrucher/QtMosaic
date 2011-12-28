@@ -9,6 +9,7 @@
 *.pdb
 *.exe
 /Debug
+/Release
 /ipch
 /debug
 /release

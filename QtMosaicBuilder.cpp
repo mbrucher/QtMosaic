@@ -79,18 +79,6 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
     return;
   }
 
-/*  int best = 0;
-  float bestDistance = distance(image, model->getThumbnails()[0]);
-
-  for(int i = 1; i < model->getThumbnails().size(); ++i)
-  {
-    float newDistance = distance(image, model->getThumbnails()[i]);
-    if(newDistance < bestDistance)
-    {
-      bestDistance = newDistance;
-      best = i;
-    }
-  }*/
   int best = model->getTree().getClosestThumbnail(thumbnail);
   image = adaptImage(model->getParallelDatabase()[best].second, image);
 }

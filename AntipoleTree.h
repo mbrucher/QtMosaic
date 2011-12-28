@@ -6,10 +6,12 @@
 #define ANTIPOLETREE
 
 #include <vector>
-#include <map>
+#include <set>
 #include <qimage.h>
 
 class AntipoleTree;
+
+typedef std::set<long> MatchingThumbnails;
 
 class AntipoleNode
 {
@@ -48,7 +50,6 @@ public:
 
 class AntipoleLeaf: public AntipoleNode
 {
-  typedef std::map<long, long> MatchingThumbnails;
   MatchingThumbnails matching_thumbnails;
 public:
   AntipoleLeaf(const AntipoleTree* tree);
@@ -61,8 +62,11 @@ public:
 
 class AntipoleTree
 {
+  static const int tournament_size;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
+
+  AntipoleNode* buildNewNode(float minimum_size, const MatchingThumbnails& old_matching);
 public:
   AntipoleTree(void);
   ~AntipoleTree();
