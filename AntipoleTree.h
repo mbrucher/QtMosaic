@@ -67,6 +67,8 @@ class AntipoleTree
   AntipoleNode* root;
 
   AntipoleNode* buildNewNode(float minimum_size, const MatchingThumbnails& old_matching);
+  int divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& righ_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
+  float computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching);
 public:
   AntipoleTree(void);
   ~AntipoleTree();

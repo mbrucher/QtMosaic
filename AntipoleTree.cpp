@@ -185,6 +185,24 @@ long AntipoleTree::getClosestThumbnail(const QImage& image) const
 
 AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumbnails& old_matching)
 {
+  MatchingThumbnails left_matching;
+  MatchingThumbnails right_matching;
+  std::vector<float> left_center;
+  std::vector<float> right_center;
+
+  int status = divideMatching(minimum_size, old_matching, left_center, right_center, left_matching, right_matching);
+  if(status == 1)
+  {
+    AntipoleInternalNode* node = new AntipoleInternalNode(this);
+    AntipoleNode* left = buildNewNode(minimum_size, left_matching);
+    node->setLeft(left);
+    left->setCenter(left_center);
+    left->setRadius(computeMaxRadius(left_center, left_matching));
+    AntipoleNode* right = buildNewNode(minimum_size, right_matching);
+    node->setRight(right);
+    right->setCenter(right_center);
+    right->setRadius(computeMaxRadius(right_center, right_matching));
+  }
 //  if (old_matching.size() <= tournament_size)
   {
     AntipoleLeaf* leaf = new AntipoleLeaf(this);
@@ -192,6 +210,22 @@ AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumb
     return leaf;
   }
   return NULL;
+}
+
+int AntipoleTree::divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& righ_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching)
+{
+  return 0;
+}
+
+float AntipoleTree::computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching)
+{
+  float radius = 0;
+  for(MatchingThumbnails::const_iterator it = matching.begin(); it != matching.end(); ++it)
+  {
+    float new_radius = HelperFunctions::distance2(center, thumbnails[*it]);
+    radius = std::max(radius, new_radius);
+  }
+  return radius;
 }
 
 float HelperFunctions::distance2(const std::vector<float>& object1, const std::vector<float>& object2)
