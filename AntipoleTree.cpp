@@ -6,6 +6,9 @@
 #include <map>
 #include <stdexcept>
 
+#include <QFuture>
+#include <QtConcurrentRun>
+
 #include "AntipoleTree.h"
 
 const int HelperFunctions::tournament_size = 3;
@@ -217,12 +220,14 @@ AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumb
     if(status == 1)
     {
       AntipoleInternalNode* node = new AntipoleInternalNode(this);
-      AntipoleNode* left = buildNewNode(minimum_size, left_matching);
+      QFuture<AntipoleNode*> left_future = QtConcurrent::run(this, &AntipoleTree::buildNewNode, minimum_size, left_matching);
+      QFuture<AntipoleNode*> right_future = QtConcurrent::run(this, &AntipoleTree::buildNewNode, minimum_size, right_matching);
+      AntipoleNode* left = left_future.result();
+      AntipoleNode* right = right_future.result();
       node->setLeft(left);
       computeCenter(left_center, left_matching);
       left->setCenter(left_center);
       left->setRadius(computeMaxRadius(left_center, left_matching));
-      AntipoleNode* right = buildNewNode(minimum_size, right_matching);
       node->setRight(right);
       computeCenter(right_center, right_matching);
       right->setCenter(right_center);
