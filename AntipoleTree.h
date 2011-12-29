@@ -62,13 +62,14 @@ public:
 
 class AntipoleTree
 {
-  static const int tournament_size;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
 
   AntipoleNode* buildNewNode(float minimum_size, const MatchingThumbnails& old_matching);
   int divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& righ_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
-  float computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching);
+  void assignMatching(const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
+  float computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching) const;
+  void computeCenter(std::vector<float>& center, const MatchingThumbnails& matching) const;
 public:
   AntipoleTree(void);
   ~AntipoleTree();
@@ -82,9 +83,11 @@ public:
 
 struct HelperFunctions
 {
+  static const int tournament_size;
   static float distance2(const std::vector<float>& image1, const std::vector<float>& image2);
   static std::vector<float> convert(const QImage& image);
   static long median1(const std::vector<std::vector<float> >& objects);
+  static std::pair<std::vector<float>, std::vector<float> > approxAntipole(const std::vector<std::vector<float> >& objects, const MatchingThumbnails& matching);
 };
 
 #endif
