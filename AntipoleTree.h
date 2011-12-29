@@ -40,7 +40,7 @@ public:
 
   virtual bool isLeaf() const = 0;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, float max_dist) const = 0;
-  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const = 0;
+  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& node_map) const = 0;
 };
 
 class AntipoleInternalNode: public AntipoleNode
@@ -58,7 +58,7 @@ public:
 
   virtual bool isLeaf() const;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, float max_dist) const;
-  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const;
+  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& node_map) const;
 };
 
 class AntipoleLeaf: public AntipoleNode
@@ -70,7 +70,7 @@ public:
 
   virtual bool isLeaf() const;
   virtual std::pair<long, float> getClosestThumbnail(const std::vector<float>& image, float max_dist) const;
-  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const;
+  virtual std::pair<long, float> visitNode(const std::vector<float>& image, float max_dist, NodeMap& node_map) const;
   void setMatching(const MatchingThumbnails& inner_thumbnails);
 };
 

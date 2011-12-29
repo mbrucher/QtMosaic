@@ -89,10 +89,10 @@ std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vect
   return best;
 }
 
-std::pair<long, float> AntipoleInternalNode::visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const
+std::pair<long, float> AntipoleInternalNode::visitNode(const std::vector<float>& image, float max_dist, NodeMap& node_map) const
 {
-  nodeMap.insert(std::make_pair(HelperFunctions::distance2(image, left->getCenter()) - left->getRadius(), left));
-  nodeMap.insert(std::make_pair(HelperFunctions::distance2(image, right->getCenter()) - right->getRadius(), right));
+  node_map.insert(std::make_pair(HelperFunctions::distance2(image, left->getCenter()) - left->getRadius(), left));
+  node_map.insert(std::make_pair(HelperFunctions::distance2(image, right->getCenter()) - right->getRadius(), right));
   return std::make_pair(-1, std::numeric_limits<float>::max());
 }
 
@@ -132,7 +132,7 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
   return std::make_pair(closest, mindist);
 }
 
-std::pair<long, float> AntipoleLeaf::visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const
+std::pair<long, float> AntipoleLeaf::visitNode(const std::vector<float>& image, float max_dist, NodeMap& node_map) const
 {
   return getClosestThumbnail(image, max_dist);
 }
@@ -176,7 +176,22 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
 {
   if(root)
   {
-    return root->getClosestThumbnail(image, std::numeric_limits<float>::max()).first;
+    NodeMap visiting_map;
+    visiting_map.insert(std::make_pair(0, root));
+    std::pair<long, float> best_pair = std::make_pair(-1, std::numeric_limits<float>::max());
+
+    while(!visiting_map.empty() && best_pair.second > visiting_map.begin()->first)
+    {
+      AntipoleNode* node = visiting_map.begin()->second;
+      visiting_map.erase(visiting_map.begin());
+      std::pair<long, float> node_best_pair = node->visitNode(image, best_pair.second, visiting_map);
+      if(node_best_pair.first >=0 && node_best_pair.second < best_pair.second)
+      {
+        best_pair = node_best_pair;
+      }
+    }
+
+    return best_pair.first; //root->getClosestThumbnail(image, std::numeric_limits<float>::max()).first;
   }
   else
   {

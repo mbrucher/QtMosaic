@@ -80,7 +80,10 @@ void QtMosaicBuilder::QtMosaicProcessor::operator()(QImage& image)
   }
 
   int best = model->getTree().getClosestThumbnail(thumbnail);
-  image = adaptImage(model->getParallelDatabase()[best].second, image);
+  if(best >= 0)
+  {
+    image = adaptImage(model->getParallelDatabase()[best].second, image);
+  }
 }
 
 void QtMosaicBuilder::reconstructImage(QImage& image, const QVector<QImage>& vector) const
