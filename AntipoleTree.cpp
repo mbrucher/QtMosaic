@@ -89,6 +89,13 @@ std::pair<long, float> AntipoleInternalNode::getClosestThumbnail(const std::vect
   return best;
 }
 
+std::pair<long, float> AntipoleInternalNode::visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const
+{
+  nodeMap.insert(std::make_pair(HelperFunctions::distance2(image, left->getCenter()) - left->getRadius(), left));
+  nodeMap.insert(std::make_pair(HelperFunctions::distance2(image, right->getCenter()) - right->getRadius(), right));
+  return std::make_pair(-1, std::numeric_limits<float>::max());
+}
+
 AntipoleLeaf::AntipoleLeaf(const AntipoleTree* tree)
   :AntipoleNode(tree)
 {
@@ -123,6 +130,11 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
     }
   }
   return std::make_pair(closest, mindist);
+}
+
+std::pair<long, float> AntipoleLeaf::visitNode(const std::vector<float>& image, float max_dist, NodeMap& nodeMap) const
+{
+  return getClosestThumbnail(image, max_dist);
 }
 
 void AntipoleLeaf::setMatching(const MatchingThumbnails& matching_thumbnails)
