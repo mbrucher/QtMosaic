@@ -9,6 +9,7 @@
 #include "AntipoleTree.h"
 
 const int HelperFunctions::tournament_size = 3;
+const long AntipoleTree::minimum_size = 10000;
 
 AntipoleNode::AntipoleNode(const AntipoleTree* tree)
   :tree(tree)
@@ -109,25 +110,19 @@ std::pair<long, float> AntipoleLeaf::getClosestThumbnail(const std::vector<float
   {
     throw std::runtime_error("Empty set for clostest thumbnail");
   }
-  long closest = 0;
+  long closest = -1;
   float mindist = std::numeric_limits<float>::max();
 
-  for(std::vector<std::vector<float> >::const_iterator it = thumbnails.begin(); it != thumbnails.end(); ++it)
+  for(MatchingThumbnails::const_iterator it = matching_thumbnails.begin(); it != matching_thumbnails.end(); ++it)
   {
-    float dist = HelperFunctions::distance2(image, *it);
+    float dist = HelperFunctions::distance2(image, thumbnails[*it]);
     if(dist < mindist)
     {
-      mindist =dist;
-      closest = it - thumbnails.begin();
+      mindist = dist;
+      closest = *it;
     }
   }
-
-  MatchingThumbnails::const_iterator it = matching_thumbnails.find(closest);
-  if(it == matching_thumbnails.end())
-  {
-    throw std::runtime_error("Matching map does not have the needed thumbnail");
-  }
-  return std::make_pair(*it, mindist);
+  return std::make_pair(closest, mindist);
 }
 
 void AntipoleLeaf::setMatching(const MatchingThumbnails& matching_thumbnails)
@@ -156,9 +151,8 @@ void AntipoleTree::build(const std::vector<std::vector<float> >& thumbnails)
     default_matching.insert(i);
   }
 
-  root = buildNewNode(100, default_matching);
+  root = buildNewNode(minimum_size, default_matching);
 
-  //root = new AntipoleLeaf(this);
 }
 
 const std::vector<std::vector<float> >& AntipoleTree::getThumbnails() const
@@ -190,28 +184,27 @@ AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumb
   std::vector<float> left_center;
   std::vector<float> right_center;
 
-  int status = divideMatching(minimum_size, old_matching, left_center, right_center, left_matching, right_matching);
-  if(status == 1)
+  if (old_matching.size() > HelperFunctions::tournament_size)
   {
-    AntipoleInternalNode* node = new AntipoleInternalNode(this);
-    AntipoleNode* left = buildNewNode(minimum_size, left_matching);
-    node->setLeft(left);
-    computeCenter(left_center, left_matching);
-    left->setCenter(left_center);
-    left->setRadius(computeMaxRadius(left_center, left_matching));
-    AntipoleNode* right = buildNewNode(minimum_size, right_matching);
-    node->setRight(right);
-    computeCenter(right_center, right_matching);
-    right->setCenter(right_center);
-    right->setRadius(computeMaxRadius(right_center, right_matching));
+    int status = divideMatching(minimum_size, old_matching, left_center, right_center, left_matching, right_matching);
+    if(status == 1)
+    {
+      AntipoleInternalNode* node = new AntipoleInternalNode(this);
+      AntipoleNode* left = buildNewNode(minimum_size, left_matching);
+      node->setLeft(left);
+      computeCenter(left_center, left_matching);
+      left->setCenter(left_center);
+      left->setRadius(computeMaxRadius(left_center, left_matching));
+      AntipoleNode* right = buildNewNode(minimum_size, right_matching);
+      node->setRight(right);
+      computeCenter(right_center, right_matching);
+      right->setCenter(right_center);
+      right->setRadius(computeMaxRadius(right_center, right_matching));
+    }
   }
-//  if (old_matching.size() <= tournament_size)
-  {
-    AntipoleLeaf* leaf = new AntipoleLeaf(this);
-    leaf->setMatching(old_matching);
-    return leaf;
-  }
-  return NULL;
+  AntipoleLeaf* leaf = new AntipoleLeaf(this);
+  leaf->setMatching(old_matching);
+  return leaf;
 }
 
 int AntipoleTree::divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching)
@@ -224,6 +217,7 @@ int AntipoleTree::divideMatching(float minimum_size, const MatchingThumbnails& o
   left_center = pair.first;
   right_center = pair.second;
   assignMatching(old_matching, left_center, right_center, left_matching, right_matching);
+  return 1;
 }
 
 void AntipoleTree::assignMatching(const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching)
@@ -334,6 +328,7 @@ std::pair<std::vector<float>, std::vector<float> > HelperFunctions::approxAntipo
 
   while(copied_objects.size() > 2)
   {
+    long start = it - copied_objects.begin();
     std::vector<std::vector<float> > new_tournament;
     for(int i = 0; i < tournament_size && i < copied_objects.size(); ++i)
     {
@@ -344,10 +339,10 @@ std::pair<std::vector<float>, std::vector<float> > HelperFunctions::approxAntipo
         it = copied_objects.begin();
       }
     }
-    long result = median1(new_tournament);
+    long result = (median1(new_tournament) + start) % copied_objects.size();
     long distance = it - copied_objects.begin();
     copied_objects.erase(copied_objects.begin() + result);
-    if(result > distance)
+    if(result < distance)
     {
       it = copied_objects.begin() + distance - 1;
     }

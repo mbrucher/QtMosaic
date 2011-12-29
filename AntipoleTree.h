@@ -62,6 +62,7 @@ public:
 
 class AntipoleTree
 {
+  static const long minimum_size;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
 
