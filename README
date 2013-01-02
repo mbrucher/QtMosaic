@@ -14,6 +14,8 @@ Changelog
    - fixed a crash bug when cancelling the construction of a photomosaic (#3)
    - can now reload a photo (#2)
    - keeps track of the latest used folder (#1)
+   - implemented a tree search (Antipole Tree) instead of a linear one (#4)
+   - parallelized the tree construction through QFutures
 
 0.1: first working version
    - uses a linear search for mosaics
