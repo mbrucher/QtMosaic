@@ -12,7 +12,7 @@
 #include "AntipoleTree.h"
 
 const int HelperFunctions::tournament_size = 3;
-const long AntipoleTree::minimum_size = 10000;
+const long AntipoleTree::minimum_size = 100;
 
 AntipoleNode::AntipoleNode(const AntipoleTree* tree)
   :tree(tree)
@@ -214,7 +214,7 @@ AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumb
   std::vector<float> left_center;
   std::vector<float> right_center;
 
-  if (old_matching.size() > HelperFunctions::tournament_size)
+  if (old_matching.size() > minimum_size)
   {
     int status = divideMatching(minimum_size, old_matching, left_center, right_center, left_matching, right_matching);
     if(status == 1)
@@ -242,10 +242,6 @@ AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumb
 int AntipoleTree::divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching)
 {
   std::pair<std::vector<float>, std::vector<float> > pair = HelperFunctions::approxAntipole(thumbnails, old_matching);
-  if(HelperFunctions::distance2(pair.first, pair.second) < minimum_size)
-  {
-    return 0;
-  }
   left_center = pair.first;
   right_center = pair.second;
   assignMatching(old_matching, left_center, right_center, left_matching, right_matching);
