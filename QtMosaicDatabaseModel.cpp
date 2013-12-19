@@ -5,7 +5,7 @@
 #include <QtCore/qfile.h>
 #include <QtCore/qfileinfo.h>
 #include <QtGui/qpixmap.h>
-#include <QtGui/qmessagebox.h>
+#include <QtWidgets/QMessageBox>
 
 #include <algorithm>
 #include <stdexcept>
@@ -15,11 +15,7 @@
 QtMosaicDatabaseModel::QtMosaicDatabaseModel(const QString& filename, QObject* parent)
   :QAbstractListModel(parent)
 {
-  if(filename == "")
-  {
-    reset();
-  }
-  else
+  if(filename != "")
   {
     open(filename);
   }
@@ -32,13 +28,13 @@ QtMosaicDatabaseModel::~QtMosaicDatabaseModel(void)
 void QtMosaicDatabaseModel::reset()
 {
   database.clear();
-  Parent::reset();
+  beginResetModel();
+  endResetModel();
 }
 
 void QtMosaicDatabaseModel::open(const QString& filename)
 {
-  database.clear();
-  Parent::reset();
+  reset();
   QFile file(filename);
   file.open(QIODevice::ReadOnly);
   QDataStream openedFile(&file);

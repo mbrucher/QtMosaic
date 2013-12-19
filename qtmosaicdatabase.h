@@ -7,7 +7,7 @@
 
 #include <QtCore/qdir.h>
 #include <QtCore/QFileInfo>
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include "ui_QtMosaicDatabase.h"
 
 class QFileSystemModel;
@@ -19,7 +19,7 @@ class QtMosaicDatabase : public QMainWindow
 	Q_OBJECT
 
 public:
-	QtMosaicDatabase(QWidget *parent = 0, Qt::WFlags flags = 0);
+	QtMosaicDatabase(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 	~QtMosaicDatabase();
 
   void newDatabase(QString fileName);

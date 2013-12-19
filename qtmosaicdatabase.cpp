@@ -3,17 +3,17 @@
  */
 
 #include <QtCore/qdir.h>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QFileSystemModel>
-#include <QtGui/QSortFilterProxyModel>
-#include <QtGui/QProgressDialog>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QFileSystemModel>
+#include <QtCore/QSortFilterProxyModel>
+#include <QtWidgets/QProgressDialog>
 
 #include "qtmosaicdatabase.h"
 #include "QtMosaicDatabaseModel.h"
 #include "QtMosaicOptions.h"
 
-QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WFlags flags)
+QtMosaicDatabase::QtMosaicDatabase(QWidget *parent, Qt::WindowFlags flags)
   : QMainWindow(parent, flags)
 {
   ui.setupUi(this);
@@ -93,7 +93,7 @@ void QtMosaicDatabase::newDatabase()
 
 void QtMosaicDatabase::openDatabase()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromLatin1("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
   {
     QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());
@@ -108,7 +108,7 @@ void QtMosaicDatabase::loadDatabase(QString fileName)
 
 void QtMosaicDatabase::saveDatabase()
 {
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromLatin1("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
   {
     QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());

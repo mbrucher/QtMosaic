@@ -9,8 +9,8 @@
 #include <QtCore/qvector.h>
 #include <QtCore/qtimer.h>
 #include <QtGui/qpixmap.h>
-#include <QtGui/qprogressdialog.h>
-#include <QtConcurrentMap>
+#include <QtWidgets/qprogressdialog.h>
+#include <QtConcurrent/QtConcurrentMap>
 
 class QtMosaicDatabaseModel;
 

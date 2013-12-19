@@ -21,3 +21,8 @@
 *.JPG
 *.psess
 *.vsp
+*.o
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+QtMosaic.app

@@ -2,15 +2,16 @@
  * \file qtmosaic.cpp
  */
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
+#include <QtCore/QString>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include "qtmosaic.h"
 #include "qtmosaicdatabase.h"
 #include "QtMosaicBuilder.h"
 #include "QtMosaicOptions.h"
 
-QtMosaic::QtMosaic(QWidget *parent, Qt::WFlags flags)
+QtMosaic::QtMosaic(QWidget *parent, Qt::WindowFlags flags)
   : QMainWindow(parent, flags), databaseUI(NULL)
 {
   ui.setupUi(this);
@@ -144,7 +145,7 @@ void QtMosaic::saveFile(QString fileName)
 
 void QtMosaic::openDatabase()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromAscii("Mosaic database (*.mosaic)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open a Mosaic database"), QtMosaicOptions::getInstance().getDefaultFolder(), QString::fromLatin1("Mosaic database (*.mosaic)"));
   if (!fileName.isEmpty())
   {
     QtMosaicOptions::getInstance().setDefaultFolder(QFileInfo(fileName).absolutePath());

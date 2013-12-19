@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 #include <QFuture>
-#include <QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 
 #include "AntipoleTree.h"
 
