@@ -22,13 +22,17 @@ public:
 
 private:
 	Ui::QtMosaicClass ui;
-  QAction *openAct;
-  QAction *reloadAct;
-  QAction *saveAct;
-  QAction *execAct;
-  QAction *exitAct;
-  QAction *openDatabaseAct;
-  QAction *editDatabaseAct;
+  QAction* openAct;
+  QAction* reloadAct;
+  QAction* saveAct;
+  QAction* execAct;
+  QAction* exitAct;
+  QAction* openDatabaseAct;
+  QAction* editDatabaseAct;
+  QActionGroup* convertGroupAct;
+  QAction* convertRGBAct;
+  QAction* convertLabAct;
+  QAction* convertLcdAct;
 
   void createActions();
   void createToolbar();

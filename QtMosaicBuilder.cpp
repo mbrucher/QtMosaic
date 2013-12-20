@@ -2,7 +2,6 @@
  * \file QtMosaicBuilder.cpp
  */
 
-#include <iostream>
 #include <QtGui/qpainter.h>
 
 #include "QtMosaicBuilder.h"

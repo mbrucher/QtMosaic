@@ -3,6 +3,7 @@
  */
 
 #include <QtCore/QString>
+#include <QtWidgets/QActionGroup>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
@@ -55,6 +56,18 @@ void QtMosaic::createActions()
   editDatabaseAct = new QAction(QIcon(":/QtMosaic/Resources/editdatabase.png"), tr("&Edit Database"), this);
   editDatabaseAct->setStatusTip(tr("Open the Edit Database window"));
   connect(editDatabaseAct, SIGNAL(triggered()), this, SLOT(editDatabase()));
+
+  convertGroupAct = new QActionGroup(this);
+  convertRGBAct = new QAction(tr("Use RGB colorspace"), convertGroupAct);
+  convertRGBAct->setCheckable(true);
+  convertGroupAct->addAction(convertRGBAct);
+  convertLabAct = new QAction(tr("Use L*a*b colorspace"), convertGroupAct);
+  convertLabAct->setCheckable(true);
+  convertGroupAct->addAction(convertLabAct);
+  convertLcdAct = new QAction(tr("Use L*c*d colorspace"), convertGroupAct);
+  convertLcdAct->setCheckable(true);
+  convertGroupAct->addAction(convertLcdAct);
+  convertRGBAct->setChecked(true);
 }
 
 void QtMosaic::createToolbar()
@@ -78,6 +91,10 @@ void QtMosaic::createMenubar()
 
   ui.menuDatabase->addAction(openDatabaseAct);
   ui.menuDatabase->addAction(editDatabaseAct);
+  ui.menuDatabase->addSeparator();
+  ui.menuDatabase->addAction(convertRGBAct);
+  ui.menuDatabase->addAction(convertLabAct);
+  ui.menuDatabase->addAction(convertLcdAct);
 }
 
 QtMosaic::~QtMosaic()
@@ -156,7 +173,7 @@ void QtMosaic::openDatabase()
 void QtMosaic::loadDatabase(QString filename)
 {
   database = filename;
-  builder->build(filename);
+  builder->build(filename, convertRGBAct->isChecked() ? 0 : convertLabAct->isChecked() ? 1 : 2);
 
   ui.databaseSize->setText(QString::number(builder->getDatabaseSize()));
   ui.mosaicHeight->setValue(builder->getDatabaseDefaultHeight());
