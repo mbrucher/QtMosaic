@@ -21,7 +21,7 @@ class QtMosaicBuilder: public QObject
 public:
   QtMosaicBuilder(QObject* parent = NULL);
 
-  void build(const QString& database);
+  void build(const QString& database, int method = 0);
   void create(const QPixmap* pixmap, int mosaicHeight, int mosaicWidth, float outputRatio);
 
   class QtMosaicProcessor
