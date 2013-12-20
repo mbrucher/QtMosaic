@@ -86,12 +86,17 @@ class AntipoleTree
   void assignMatching(const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
   float computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching) const;
   void computeCenter(std::vector<float>& center, const MatchingThumbnails& matching) const;
+  
+  std::vector<float> convert(const QImage& image) const;
+  const std::vector<std::vector<float> >& getThumbnails() const;
+  
+  friend AntipoleLeaf;
+  
 public:
   AntipoleTree(void);
   ~AntipoleTree();
 
-  const std::vector<std::vector<float> >& getThumbnails() const;
-  void build(const std::vector<std::vector<float> >& thumbnails);
+  void build(const QVector<QImage>& thumbnails);
   void setMethod(int method);
 
   long getClosestThumbnail(const std::vector<float>& image) const;

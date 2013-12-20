@@ -160,16 +160,17 @@ void AntipoleTree::setMethod(int method)
   this->method = method;
 }
 
-void AntipoleTree::build(const std::vector<std::vector<float> >& thumbnails)
+void AntipoleTree::build(const QVector<QImage>& thumbnails)
 {
-  this->thumbnails = thumbnails;
-  delete root;
-
+  this->thumbnails.clear();
+  
   MatchingThumbnails default_matching;
-  for(int i = 0; i < thumbnails.size(); ++i)
+  for(int i = 0; i < this->thumbnails.size(); ++i)
   {
     default_matching.insert(i);
+    this->thumbnails.push_back(convert(thumbnails[i]));
   }
+  delete root;
 
   root = buildNewNode(minimum_size, default_matching);
 
@@ -207,16 +208,20 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
   }
 }
 
-long AntipoleTree::getClosestThumbnail(const QImage& image) const
+std::vector<float> AntipoleTree::convert(const QImage& image) const
 {
-  std::vector<float> converted_image;
   switch(method)
   {
     case 0:
-      converted_image = HelperFunctions::convert_rgb(image);
+      return HelperFunctions::convert_rgb(image);
       break;
   }
-  return getClosestThumbnail(converted_image);
+  throw std::runtime_error("Bad conversion method");
+}
+
+long AntipoleTree::getClosestThumbnail(const QImage& image) const
+{
+  return getClosestThumbnail(convert(image));
 }
 
 AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumbnails& old_matching)
