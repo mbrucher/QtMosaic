@@ -13,7 +13,7 @@
 #include "QtMosaicDatabaseModel.h"
 
 QtMosaicDatabaseModel::QtMosaicDatabaseModel(const QString& filename, QObject* parent)
-  :QAbstractListModel(parent)
+  :QAbstractListModel(parent), method(0)
 {
   if(filename != "")
   {
@@ -30,6 +30,11 @@ void QtMosaicDatabaseModel::reset()
   database.clear();
   beginResetModel();
   endResetModel();
+}
+
+void QtMosaicDatabaseModel::setMethod(int method)
+{
+  this->method = method;
 }
 
 void QtMosaicDatabaseModel::open(const QString& filename)
@@ -136,7 +141,15 @@ void QtMosaicDatabaseModel::build()
     thumbnails.push_back(temp);
     parallelDatabase.push_back(std::make_pair(image.first, image.second.toImage()));
 
-    antipole_database.push_back(HelperFunctions::convert(temp));
+    std::vector<float> converted_image;
+    switch(method)
+    {
+      case 0:
+        converted_image = HelperFunctions::convert_rgb(temp);
+        break;
+    }
+    antipole_database.push_back(converted_image);
   }
   tree.build(antipole_database);
+  tree.setMethod(method);
 }

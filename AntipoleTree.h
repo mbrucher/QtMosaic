@@ -77,6 +77,7 @@ public:
 class AntipoleTree
 {
   static const long minimum_size;
+  int method;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
 
@@ -91,6 +92,7 @@ public:
 
   const std::vector<std::vector<float> >& getThumbnails() const;
   void build(const std::vector<std::vector<float> >& thumbnails);
+  void setMethod(int method);
 
   long getClosestThumbnail(const std::vector<float>& image) const;
   long getClosestThumbnail(const QImage& image) const;
@@ -100,9 +102,13 @@ struct HelperFunctions
 {
   static const int tournament_size;
   static float distance2(const std::vector<float>& image1, const std::vector<float>& image2);
-  static std::vector<float> convert(const QImage& image);
   static long median1(const std::vector<std::vector<float> >& objects);
   static std::pair<std::vector<float>, std::vector<float> > approxAntipole(const std::vector<std::vector<float> >& objects, const MatchingThumbnails& matching);
+
+  static std::vector<float> convert_rgb(const QImage& image);
+  static std::vector<float> convert_lab(const QImage& image);
+  static std::vector<float> convert_lcd(const QImage& image);
+
 };
 
 #endif

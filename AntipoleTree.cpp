@@ -146,13 +146,18 @@ void AntipoleLeaf::setMatching(const MatchingThumbnails& matching_thumbnails)
 }
 
 AntipoleTree::AntipoleTree(void)
-  :root(NULL)
+  :root(NULL), method(0)
 {
 }
 
 AntipoleTree::~AntipoleTree()
 {
   delete root;
+}
+
+void AntipoleTree::setMethod(int method)
+{
+  this->method = method;
 }
 
 void AntipoleTree::build(const std::vector<std::vector<float> >& thumbnails)
@@ -204,7 +209,14 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
 
 long AntipoleTree::getClosestThumbnail(const QImage& image) const
 {
-  return getClosestThumbnail(HelperFunctions::convert(image));
+  std::vector<float> converted_image;
+  switch(method)
+  {
+    case 0:
+      converted_image = HelperFunctions::convert_rgb(image);
+      break;
+  }
+  return getClosestThumbnail(converted_image);
 }
 
 AntipoleNode* AntipoleTree::buildNewNode(float minimum_size, const MatchingThumbnails& old_matching)
@@ -305,24 +317,6 @@ float HelperFunctions::distance2(const std::vector<float>& object1, const std::v
   return dist;
 }
 
-std::vector<float> HelperFunctions::convert(const QImage& image)
-{
-  std::vector<float> thumbnail;
-
-  for(int j = 0; j < image.height(); ++j)
-  {
-    for(int i = 0; i < image.width(); ++i)
-    {
-      QRgb pixel = image.pixel(i, j);
-      thumbnail.push_back(qRed(pixel));
-      thumbnail.push_back(qBlue(pixel));
-      thumbnail.push_back(qGreen(pixel));
-    }
-  }
-
-  return thumbnail;
-}
-
 long HelperFunctions::median1(const std::vector<std::vector<float> >& objects)
 {
   if(objects.empty())
@@ -387,4 +381,22 @@ std::pair<std::vector<float>, std::vector<float> > HelperFunctions::approxAntipo
     }
   }
   return std::make_pair(*copied_objects.begin(), *(copied_objects.begin()+1));
+}
+
+std::vector<float> HelperFunctions::convert_rgb(const QImage& image)
+{
+  std::vector<float> thumbnail;
+  
+  for(int j = 0; j < image.height(); ++j)
+  {
+    for(int i = 0; i < image.width(); ++i)
+    {
+      QRgb pixel = image.pixel(i, j);
+      thumbnail.push_back(qRed(pixel));
+      thumbnail.push_back(qBlue(pixel));
+      thumbnail.push_back(qGreen(pixel));
+    }
+  }
+  
+  return thumbnail;
 }
