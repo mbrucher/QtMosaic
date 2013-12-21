@@ -165,7 +165,7 @@ void AntipoleTree::build(const QVector<QImage>& thumbnails)
   this->thumbnails.clear();
   
   MatchingThumbnails default_matching;
-  for(int i = 0; i < this->thumbnails.size(); ++i)
+  for(int i = 0; i < thumbnails.size(); ++i)
   {
     default_matching.insert(i);
     this->thumbnails.push_back(convert(thumbnails[i]));
@@ -441,11 +441,8 @@ std::vector<float> HelperFunctions::convert_lab(const QImage& image)
       float z = pivotXYZ(r * 0.0193 + g * 0.1192 + b * 0.9505) / z_ref;
       
       thumbnail.push_back(std::max(0., 116. * y - 16));
-      std::cout << thumbnail.back() << std::endl;
       thumbnail.push_back(500 * (x - y));
-      std::cout << thumbnail.back() << std::endl;
       thumbnail.push_back(200 * (y - z));
-      std::cout << thumbnail.back() << std::endl;
     }
   }
   
