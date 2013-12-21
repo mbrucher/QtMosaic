@@ -215,6 +215,9 @@ std::vector<float> AntipoleTree::convert(const QImage& image) const
     case 0:
       return HelperFunctions::convert_rgb(image);
       break;
+    case 1:
+      return HelperFunctions::convert_lab(image);
+      break;
   }
   throw std::runtime_error("Bad conversion method");
 }
@@ -400,6 +403,49 @@ std::vector<float> HelperFunctions::convert_rgb(const QImage& image)
       thumbnail.push_back(qRed(pixel));
       thumbnail.push_back(qBlue(pixel));
       thumbnail.push_back(qGreen(pixel));
+    }
+  }
+  
+  return thumbnail;
+}
+
+static float pivotRGB(float n)
+{
+  return (n > 0.04045 ? std::pow((n + 0.055) / 1.055, 2.4) : n / 12.92) * 100;
+}
+
+static float pivotXYZ(float n)
+{
+  return (n > 0.008856 ? std::pow(n, 1. / 3.) : (903.3 * n + 16) / 116);
+}
+
+std::vector<float> HelperFunctions::convert_lab(const QImage& image)
+{
+  std::vector<float> thumbnail;
+  
+  for(int j = 0; j < image.height(); ++j)
+  {
+    for(int i = 0; i < image.width(); ++i)
+    {
+      QRgb pixel = image.pixel(i, j);
+      float x_ref= 95.047;
+      float y_ref = 100;
+      float z_ref = 108.883;
+      
+      float r = pivotRGB(qRed(pixel));
+      float g = pivotRGB(qGreen(pixel));
+      float b = pivotRGB(qBlue(pixel));
+
+      float x = pivotXYZ(r * 0.4124 + g * 0.3576 + b * 0.1805) / x_ref;
+      float y = pivotXYZ(r * 0.2126 + g * 0.7152 + b * 0.0722) / y_ref;
+      float z = pivotXYZ(r * 0.0193 + g * 0.1192 + b * 0.9505) / z_ref;
+      
+      thumbnail.push_back(std::max(0., 116. * y - 16));
+      std::cout << thumbnail.back() << std::endl;
+      thumbnail.push_back(500 * (x - y));
+      std::cout << thumbnail.back() << std::endl;
+      thumbnail.push_back(200 * (y - z));
+      std::cout << thumbnail.back() << std::endl;
     }
   }
   
