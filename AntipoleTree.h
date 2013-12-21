@@ -112,7 +112,7 @@ struct HelperFunctions
 
   static std::vector<float> convert_rgb(const QImage& image);
   static std::vector<float> convert_lab(const QImage& image);
-  static std::vector<float> convert_lcd(const QImage& image);
+  static std::vector<float> convert_lch(const QImage& image);
 
 };
 

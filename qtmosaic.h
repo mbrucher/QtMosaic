@@ -32,7 +32,7 @@ private:
   QActionGroup* convertGroupAct;
   QAction* convertRGBAct;
   QAction* convertLabAct;
-  QAction* convertLcdAct;
+  QAction* convertLchAct;
 
   void createActions();
   void createToolbar();

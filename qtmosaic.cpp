@@ -64,9 +64,9 @@ void QtMosaic::createActions()
   convertLabAct = new QAction(tr("Use L*a*b colorspace"), convertGroupAct);
   convertLabAct->setCheckable(true);
   convertGroupAct->addAction(convertLabAct);
-  convertLcdAct = new QAction(tr("Use L*c*d colorspace"), convertGroupAct);
-  convertLcdAct->setCheckable(true);
-  convertGroupAct->addAction(convertLcdAct);
+  convertLchAct = new QAction(tr("Use L*c*h colorspace"), convertGroupAct);
+  convertLchAct->setCheckable(true);
+  convertGroupAct->addAction(convertLchAct);
   convertRGBAct->setChecked(true);
 }
 
@@ -94,7 +94,7 @@ void QtMosaic::createMenubar()
   ui.menuDatabase->addSeparator();
   ui.menuDatabase->addAction(convertRGBAct);
   ui.menuDatabase->addAction(convertLabAct);
-  ui.menuDatabase->addAction(convertLcdAct);
+  ui.menuDatabase->addAction(convertLchAct);
 }
 
 QtMosaic::~QtMosaic()

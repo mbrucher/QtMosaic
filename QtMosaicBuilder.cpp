@@ -147,9 +147,9 @@ QImage adaptImage(const QImage& image, const QImage& reference)
     for(int i = 0; i < newImage.width(); ++i)
     {
       const QRgb& rgb = newImage.pixel(i, j);
-      int red = qRed(rgb) + red_ref - red_img;
-      int blue = qBlue(rgb) + blue_ref - blue_img;
-      int green = qGreen(rgb) + green_ref - green_ref;
+      int red = qRed(rgb) + (red_ref - red_img);
+      int blue = qBlue(rgb) + (blue_ref - blue_img);
+      int green = qGreen(rgb) + (green_ref - green_ref);
       red = std::min(std::max(0, red), 255);
       blue = std::min(std::max(0, blue), 255);
       green = std::min(std::max(0, green), 255);
