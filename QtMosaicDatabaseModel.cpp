@@ -13,7 +13,7 @@
 #include "QtMosaicDatabaseModel.h"
 
 QtMosaicDatabaseModel::QtMosaicDatabaseModel(const QString& filename, QObject* parent)
-  :QAbstractListModel(parent), method(0)
+  :QAbstractListModel(parent), conversion_method(0)
 {
   if(filename != "")
   {
@@ -32,9 +32,9 @@ void QtMosaicDatabaseModel::reset()
   endResetModel();
 }
 
-void QtMosaicDatabaseModel::setMethod(int method)
+void QtMosaicDatabaseModel::setConversionMethod(int conversion_method)
 {
-  this->method = method;
+  this->conversion_method = conversion_method;
 }
 
 void QtMosaicDatabaseModel::open(const QString& filename)
@@ -133,7 +133,7 @@ void QtMosaicDatabaseModel::removeElement(const QString& filename)
 void QtMosaicDatabaseModel::build()
 {
   Database::value_type image;
-  tree.setMethod(method);
+  tree.setConversionMethod(conversion_method);
 
   foreach(image, database)
   {

@@ -32,7 +32,7 @@ public:
   typedef QList<std::pair<QString, QPixmap> > Database;
   typedef QList<std::pair<QString, QImage> > ParallelDatabase;
   void build();
-  void setMethod(int method);
+  void setConversionMethod(int conversion_method);
 
   const QVector<QImage>& getThumbnails() const
   {
@@ -55,7 +55,7 @@ private:
   Database database;
   ParallelDatabase parallelDatabase;
   AntipoleTree tree;
-  int method;
+  int conversion_method;
 
   QVector<QImage> thumbnails;
 

@@ -77,7 +77,7 @@ public:
 class AntipoleTree
 {
   static const long minimum_size;
-  int method;
+  int conversion_method;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
 
@@ -97,7 +97,7 @@ public:
   ~AntipoleTree();
 
   void build(const QVector<QImage>& thumbnails);
-  void setMethod(int method);
+  void setConversionMethod(int conversion_method);
 
   long getClosestThumbnail(const std::vector<float>& image) const;
   long getClosestThumbnail(const QImage& image) const;

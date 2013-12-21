@@ -146,7 +146,7 @@ void AntipoleLeaf::setMatching(const MatchingThumbnails& matching_thumbnails)
 }
 
 AntipoleTree::AntipoleTree(void)
-  :root(NULL), method(0)
+  :root(NULL), conversion_method(0)
 {
 }
 
@@ -155,9 +155,9 @@ AntipoleTree::~AntipoleTree()
   delete root;
 }
 
-void AntipoleTree::setMethod(int method)
+void AntipoleTree::setConversionMethod(int conversion_method)
 {
-  this->method = method;
+  this->conversion_method = conversion_method;
 }
 
 void AntipoleTree::build(const QVector<QImage>& thumbnails)
@@ -210,7 +210,7 @@ long AntipoleTree::getClosestThumbnail(const std::vector<float>& image) const
 
 std::vector<float> AntipoleTree::convert(const QImage& image) const
 {
-  switch(method)
+  switch(conversion_method)
   {
     case 0:
       return HelperFunctions::convert_rgb(image);

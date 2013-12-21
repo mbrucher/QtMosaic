@@ -12,11 +12,11 @@ QtMosaicBuilder::QtMosaicBuilder(QObject* parent)
 {
 }
 
-void QtMosaicBuilder::build(const QString& database, int method)
+void QtMosaicBuilder::build(const QString& database, int conversion_method)
 {
   model = new QtMosaicDatabaseModel(database, this);
   processor.model = model;
-  model->setMethod(method);
+  model->setConversionMethod(conversion_method);
   model->build();
 }
 
