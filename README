@@ -10,8 +10,11 @@ QtMosaic is published under the GPL3
 Changelog
 ---------
 
+0.3:
+   - Added a new colorspace L*a*b
+
 0.2:
-   - fixed a crash bug when cancelling the construction of a photomosaic (#3)
+   - fixed a crash bug when canceling the construction of a photomosaic (#3)
    - can now reload a photo (#2)
    - keeps track of the latest used folder (#1)
    - implemented a tree search (Antipole Tree) instead of a linear one (#4)
