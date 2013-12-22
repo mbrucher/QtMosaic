@@ -12,6 +12,7 @@ Changelog
 
 0.3:
    - Added a new colorspace L*a*b
+   - Added a new colorspace L*c*h
 
 0.2:
    - fixed a crash bug when canceling the construction of a photomosaic (#3)

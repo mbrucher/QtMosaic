@@ -218,6 +218,9 @@ std::vector<float> AntipoleTree::convert(const QImage& image) const
     case 1:
       return HelperFunctions::convert_lab(image);
       break;
+    case 2:
+      return HelperFunctions::convert_lch(image);
+      break;
   }
   throw std::runtime_error("Bad conversion method");
 }
@@ -443,6 +446,20 @@ void convertRGB2LAB(float red, float green, float blue, float& l, float& a, floa
   convertXYZ2LAB(x, y, z, l, a, b);
 }
 
+void convertAB2CH(float a, float b, float& c, float& h)
+{
+  h = std::atan2(b, a) / M_PI * 180;
+  c = std::sqrt(a*a + b*b);
+}
+
+void convertRGB2LCH(float red, float green, float blue, float& l, float& c, float& h)
+{
+  float x, y, z, a, b;
+  convertRGB2XYZ(red, green, blue, x, y, z);
+  convertXYZ2LAB(x, y, z, l, a, b);
+  convertAB2CH(a, b, c, h);
+}
+
 std::vector<float> HelperFunctions::convert_lab(const QImage& image)
 {
   std::vector<float> thumbnail;
@@ -456,7 +473,7 @@ std::vector<float> HelperFunctions::convert_lab(const QImage& image)
       float red = pivotRGB(qRed(pixel));
       float green = pivotRGB(qGreen(pixel));
       float blue = pivotRGB(qBlue(pixel));
-
+      
       float l, a, b;
       
       convertRGB2LAB(red, green, blue, l, a, b);
@@ -464,6 +481,33 @@ std::vector<float> HelperFunctions::convert_lab(const QImage& image)
       thumbnail.push_back(l);
       thumbnail.push_back(a);
       thumbnail.push_back(b);
+    }
+  }
+  
+  return thumbnail;
+}
+
+std::vector<float> HelperFunctions::convert_lch(const QImage& image)
+{
+  std::vector<float> thumbnail;
+  
+  for(int j = 0; j < image.height(); ++j)
+  {
+    for(int i = 0; i < image.width(); ++i)
+    {
+      QRgb pixel = image.pixel(i, j);
+      
+      float red = pivotRGB(qRed(pixel));
+      float green = pivotRGB(qGreen(pixel));
+      float blue = pivotRGB(qBlue(pixel));
+      
+      float l, c, h;
+      
+      convertRGB2LCH(red, green, blue, l, c, h);
+      
+      thumbnail.push_back(l);
+      thumbnail.push_back(c);
+      thumbnail.push_back(h);
     }
   }
   
