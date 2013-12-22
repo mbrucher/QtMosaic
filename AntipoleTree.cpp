@@ -419,6 +419,30 @@ static float pivotXYZ(float n)
   return (n > 0.008856 ? std::pow(n, 1. / 3.) : (903.3 * n + 16) / 116);
 }
 
+void convertRGB2XYZ(float r, float g, float b, float& x, float& y, float& z)
+{
+  float x_ref= 95.047;
+  float y_ref = 100;
+  float z_ref = 108.883;
+  x = pivotXYZ(r * 0.4124 + g * 0.3576 + b * 0.1805) / x_ref;
+  y = pivotXYZ(r * 0.2126 + g * 0.7152 + b * 0.0722) / y_ref;
+  z = pivotXYZ(r * 0.0193 + g * 0.1192 + b * 0.9505) / z_ref;
+}
+
+void convertXYZ2LAB(float x, float y, float z, float& l, float& a, float& b)
+{
+  l = std::max(0., 116. * y - 16);
+  a = 500 * (x - y);
+  b = 200 * (y - z);
+}
+
+void convertRGB2LAB(float red, float green, float blue, float& l, float& a, float& b)
+{
+  float x, y, z;
+  convertRGB2XYZ(red, green, blue, x, y, z);
+  convertXYZ2LAB(x, y, z, l, a, b);
+}
+
 std::vector<float> HelperFunctions::convert_lab(const QImage& image)
 {
   std::vector<float> thumbnail;
@@ -428,21 +452,18 @@ std::vector<float> HelperFunctions::convert_lab(const QImage& image)
     for(int i = 0; i < image.width(); ++i)
     {
       QRgb pixel = image.pixel(i, j);
-      float x_ref= 95.047;
-      float y_ref = 100;
-      float z_ref = 108.883;
       
-      float r = pivotRGB(qRed(pixel));
-      float g = pivotRGB(qGreen(pixel));
-      float b = pivotRGB(qBlue(pixel));
+      float red = pivotRGB(qRed(pixel));
+      float green = pivotRGB(qGreen(pixel));
+      float blue = pivotRGB(qBlue(pixel));
 
-      float x = pivotXYZ(r * 0.4124 + g * 0.3576 + b * 0.1805) / x_ref;
-      float y = pivotXYZ(r * 0.2126 + g * 0.7152 + b * 0.0722) / y_ref;
-      float z = pivotXYZ(r * 0.0193 + g * 0.1192 + b * 0.9505) / z_ref;
+      float l, a, b;
       
-      thumbnail.push_back(std::max(0., 116. * y - 16));
-      thumbnail.push_back(500 * (x - y));
-      thumbnail.push_back(200 * (y - z));
+      convertRGB2LAB(red, green, blue, l, a, b);
+      
+      thumbnail.push_back(l);
+      thumbnail.push_back(a);
+      thumbnail.push_back(b);
     }
   }
   
