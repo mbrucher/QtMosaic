@@ -77,12 +77,12 @@ public:
 class AntipoleTree
 {
   static const long minimum_size;
-  int conversion_method;
   std::vector<std::vector<float> > thumbnails;
   AntipoleNode* root;
+  int conversion_method;
 
   AntipoleNode* buildNewNode(float minimum_size, const MatchingThumbnails& old_matching);
-  int divideMatching(float minimum_size, const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& righ_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
+  int divideMatching(const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& righ_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
   void assignMatching(const MatchingThumbnails& old_matching, std::vector<float>& left_center, std::vector<float>& right_center, MatchingThumbnails& left_matching, MatchingThumbnails& right_matching);
   float computeMaxRadius(const std::vector<float>& center, const MatchingThumbnails& matching) const;
   void computeCenter(std::vector<float>& center, const MatchingThumbnails& matching) const;
